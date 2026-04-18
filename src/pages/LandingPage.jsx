@@ -4,7 +4,7 @@ import {
   Calendar, Zap, Shield, TrendingUp, ChevronRight,
   Check, ArrowRight, Smartphone, Layers, Plus, Minus,
   Play, ShieldCheck, CreditCard, Star, X, MessageCircle,
-  Clock, Users, DollarSign, Bell, Globe, Award, ChevronDown
+  Clock, Users, DollarSign, Bell, Globe, Award, ChevronDown, Menu
 } from 'lucide-react';
 
 /* ─── Google Fonts ─── */
@@ -131,6 +131,37 @@ const FontLoader = () => (
       width: calc(100% - 56px);
       height: 2px;
       background: linear-gradient(90deg, #f59e0b, rgba(245,158,11,0.1));
+    }
+
+    /* ── Mobile nav menu ── */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.98);
+      border-bottom: 1px solid #e2e8f0;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 8px 0 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    @media (max-width: 767px) {
+      .whatsapp-btn { bottom: 16px; right: 16px; width: 48px; height: 48px; }
     }
   `}</style>
 );
@@ -306,6 +337,15 @@ const LandingPage = () => {
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [showExitPopup, setShowExitPopup] = useState(false);
   const [exitPopupDismissed, setExitPopupDismissed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setShowStickyBar(window.scrollY > 500);
@@ -321,6 +361,9 @@ const LandingPage = () => {
     return () => document.removeEventListener('mouseleave', onMouseLeave);
   }, [exitPopupDismissed]);
 
+  const sectionPad = isMobile ? '64px 16px' : '96px 24px';
+  const sectionPadSm = isMobile ? '48px 16px' : '72px 24px';
+
   return (
     <>
       <FontLoader />
@@ -330,22 +373,25 @@ const LandingPage = () => {
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 999,
           background: 'linear-gradient(90deg, #0f172a 0%, #1e293b 100%)',
-          padding: '12px 24px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16,
+          padding: isMobile ? '10px 16px' : '12px 24px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: isMobile ? 10 : 16,
+          flexWrap: 'wrap',
           transition: 'transform 0.35s ease',
           transform: showStickyBar ? 'translateY(0)' : 'translateY(-100%)',
           boxShadow: '0 2px 20px rgba(0,0,0,0.25)',
         }}
       >
-        <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: 14, fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+        <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: isMobile ? 12 : 14, fontFamily: 'Bricolage Grotesque, sans-serif', textAlign: 'center' }}>
           🔥 Limited offer: FREE trial Available for 7 Days
         </span>
         <Link to="/register" style={{
           background: '#f59e0b', color: '#0f172a',
-          padding: '8px 20px', borderRadius: 999,
-          fontWeight: 800, fontSize: 13, textDecoration: 'none',
+          padding: isMobile ? '6px 16px' : '8px 20px', borderRadius: 999,
+          fontWeight: 800, fontSize: isMobile ? 12 : 13, textDecoration: 'none',
           fontFamily: 'Bricolage Grotesque, sans-serif',
           transition: 'background 0.2s',
+          whiteSpace: 'nowrap',
         }}>
           Claim Offer →
         </Link>
@@ -360,7 +406,7 @@ const LandingPage = () => {
           padding: 24,
         }}>
           <div style={{
-            background: '#fff', borderRadius: 24, padding: 40, maxWidth: 480, width: '100%',
+            background: '#fff', borderRadius: 24, padding: isMobile ? 28 : 40, maxWidth: 480, width: '100%',
             boxShadow: '0 40px 80px rgba(0,0,0,0.2)',
             textAlign: 'center', position: 'relative',
             fontFamily: 'DM Sans, sans-serif',
@@ -372,7 +418,7 @@ const LandingPage = () => {
               <X size={20} />
             </button>
             <div style={{ fontSize: 48, marginBottom: 12 }}>🎁</div>
-            <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 26, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>
+            <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: isMobile ? 22 : 26, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>
               Wait! Don't miss this.
             </h3>
             <p style={{ color: '#64748b', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
@@ -409,56 +455,91 @@ const LandingPage = () => {
           <div style={{
             maxWidth: 1200, margin: '0 auto',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '16px 24px',
+            padding: isMobile ? '14px 16px' : '16px 24px',
+            position: 'relative',
           }}>
             <div style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 26, fontWeight: 800, color: '#0f172a' }}>
               Book<span style={{ color: '#f59e0b' }}>Ease</span>
             </div>
-            <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-              <a href="#features" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Features</a>
-              <a href="#how-it-works" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>How it works</a>
-              <a href="#pricing" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Pricing</a>
-              <a href="#faq" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>FAQ</a>
-            </div>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-              <Link to="/login" style={{ fontSize: 14, fontWeight: 600, color: '#334155', textDecoration: 'none' }}>Sign in</Link>
+
+            {/* Desktop nav links */}
+            {!isMobile && (
+              <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+                <a href="#features" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Features</a>
+                <a href="#how-it-works" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>How it works</a>
+                <a href="#pricing" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Pricing</a>
+                <a href="#faq" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>FAQ</a>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: isMobile ? 8 : 12, alignItems: 'center' }}>
+              {!isMobile && (
+                <Link to="/login" style={{ fontSize: 14, fontWeight: 600, color: '#334155', textDecoration: 'none' }}>Sign in</Link>
+              )}
               <Link to="/register" style={{
                 background: '#0f172a', color: '#fff',
-                padding: '10px 22px', borderRadius: 999,
-                fontSize: 14, fontWeight: 700, textDecoration: 'none',
+                padding: isMobile ? '9px 16px' : '10px 22px', borderRadius: 999,
+                fontSize: isMobile ? 13 : 14, fontWeight: 700, textDecoration: 'none',
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 boxShadow: '0 4px 14px rgba(15,23,42,0.18)',
+                whiteSpace: 'nowrap',
               }}>
-                Get Started Free
+                {isMobile ? 'Get Started' : 'Get Started Free'}
               </Link>
+              {/* Mobile hamburger */}
+              {isMobile && (
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#334155', padding: 4, display: 'flex', alignItems: 'center' }}
+                >
+                  <Menu size={22} />
+                </button>
+              )}
             </div>
+
+            {/* Mobile dropdown menu */}
+            {isMobile && (
+              <div className={`mobile-menu${mobileMenuOpen ? ' open' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <Link to="/login" style={{ padding: '12px 24px', fontSize: 15, fontWeight: 500, color: '#334155', textDecoration: 'none', borderBottom: '1px solid #f1f5f9' }}>Sign in</Link>
+              </div>
+            )}
           </div>
         </nav>
 
         {/* ══════════════════ HERO ══════════════════ */}
-        <section className="hero-bg" style={{ padding: '96px 24px 80px', position: 'relative', overflow: 'hidden' }}>
+        <section className="hero-bg" style={{ padding: isMobile ? '56px 16px 48px' : '96px 24px 80px', position: 'relative', overflow: 'hidden' }}>
           {/* Decorative blobs */}
           <div style={{
-            position: 'absolute', top: -100, right: -100, width: 500, height: 500,
+            position: 'absolute', top: -100, right: -100, width: isMobile ? 280 : 500, height: isMobile ? 280 : 500,
             borderRadius: '50%',
             background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
           <div style={{
-            position: 'absolute', bottom: -50, left: -80, width: 350, height: 350,
+            position: 'absolute', bottom: -50, left: -80, width: isMobile ? 200 : 350, height: isMobile ? 200 : 350,
             borderRadius: '50%',
             background: 'radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
-          <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+          <div style={{
+            maxWidth: 1200, margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: isMobile ? 40 : 64,
+            alignItems: 'center',
+          }}>
             <div style={{ animation: 'fadeUp 0.7s ease forwards' }}>
               {/* Badge */}
               <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
                 background: '#fef3c7', border: '1px solid rgba(245,158,11,0.3)',
                 borderRadius: 999, padding: '6px 14px',
-                fontSize: 13, fontWeight: 600, color: '#92400e', marginBottom: 24,
+                fontSize: isMobile ? 12 : 13, fontWeight: 600, color: '#92400e', marginBottom: 24,
               }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: 'pulse-ring 2s ease-out infinite' }} />
                  Next Gen System — reduce no-shows by 80%
@@ -466,7 +547,7 @@ const LandingPage = () => {
 
               <h1 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(40px, 5vw, 68px)',
+                fontSize: 'clamp(36px, 5vw, 68px)',
                 fontWeight: 800, lineHeight: 1.08,
                 color: '#0f172a', marginBottom: 24,
                 letterSpacing: '-1.5px',
@@ -481,15 +562,15 @@ const LandingPage = () => {
                 </span>
               </h1>
 
-              <p style={{ fontSize: 18, lineHeight: 1.7, color: '#475569', maxWidth: 480, marginBottom: 36 }}>
+              <p style={{ fontSize: isMobile ? 16 : 18, lineHeight: 1.7, color: '#475569', maxWidth: 480, marginBottom: 36 }}>
                 The booking platform built for coaches, salons, and service professionals. Automate scheduling, payments, and reminders — so you focus on clients, not coordination.
               </p>
 
-              <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
+              <div style={{ display: 'flex', gap: isMobile ? 12 : 16, alignItems: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
                 <Link to="/register" style={{
                   background: '#f59e0b', color: '#0f172a',
-                  padding: '16px 32px', borderRadius: 14,
-                  fontSize: 16, fontWeight: 800, textDecoration: 'none',
+                  padding: isMobile ? '14px 24px' : '16px 32px', borderRadius: 14,
+                  fontSize: isMobile ? 15 : 16, fontWeight: 800, textDecoration: 'none',
                   fontFamily: 'Bricolage Grotesque, sans-serif',
                   boxShadow: '0 8px 28px rgba(245,158,11,0.4)',
                   transition: 'all 0.2s',
@@ -505,6 +586,7 @@ const LandingPage = () => {
                     background: '#fff', border: '1px solid #e2e8f0',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    flexShrink: 0,
                   }}>
                     <Play size={16} fill="#0f172a" />
                   </span>
@@ -542,7 +624,7 @@ const LandingPage = () => {
             <div style={{ position: 'relative', animation: 'fadeUp 0.7s 0.2s ease both' }}>
               <div style={{
                 background: '#fff', borderRadius: 24,
-                padding: 24, boxShadow: '0 30px 80px rgba(0,0,0,0.12)',
+                padding: isMobile ? 18 : 24, boxShadow: '0 30px 80px rgba(0,0,0,0.12)',
                 border: '1px solid #e2e8f0', position: 'relative', overflow: 'hidden',
               }}>
                 {/* Mock booking UI */}
@@ -559,40 +641,65 @@ const LandingPage = () => {
                   ].map((s, i) => (
                     <div key={i} style={{ background: '#f8fafc', borderRadius: 12, padding: '14px 16px', border: '1px solid #e2e8f0' }}>
                       <p style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600, marginBottom: 4 }}>{s.label}</p>
-                      <p style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: 'Bricolage Grotesque, sans-serif' }}>{s.val}</p>
+                      <p style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: '#0f172a', fontFamily: 'Bricolage Grotesque, sans-serif' }}>{s.val}</p>
                     </div>
                   ))}
                 </div>
                 <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#bbf7d0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#bbf7d0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <CreditCard size={18} color="#16a34a" />
                   </div>
                   <div>
                     <p style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5 }}>New Booking Confirmed</p>
-                    <p style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', fontFamily: 'Bricolage Grotesque, sans-serif' }}>+₹2,400 received • Rahul M.</p>
+                    <p style={{ fontSize: isMobile ? 13 : 15, fontWeight: 800, color: '#0f172a', fontFamily: 'Bricolage Grotesque, sans-serif' }}>+₹2,400 received • Rahul M.</p>
                   </div>
                 </div>
               </div>
 
-              {/* Floating badges */}
-              <div className="animate-float" style={{
-                position: 'absolute', top: -20, right: -20,
-                background: '#fff', borderRadius: 16, padding: '12px 16px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: '1px solid #e2e8f0',
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}>
-                <span style={{ fontSize: 20 }}>⚡</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>Live in 60 sec</span>
-              </div>
-              <div style={{
-                position: 'absolute', bottom: -16, left: -20,
-                background: '#0f172a', borderRadius: 16, padding: '12px 18px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-                display: 'flex', alignItems: 'center', gap: 8,
-              }}>
-                <ShieldCheck size={18} color="#f59e0b" />
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>0% commission</span>
-              </div>
+              {/* Floating badges — hidden on mobile to avoid overflow */}
+              {!isMobile && (
+                <>
+                  <div className="animate-float" style={{
+                    position: 'absolute', top: -20, right: -20,
+                    background: '#fff', borderRadius: 16, padding: '12px 16px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: '1px solid #e2e8f0',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                  }}>
+                    <span style={{ fontSize: 20 }}>⚡</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#0f172a' }}>Live in 60 sec</span>
+                  </div>
+                  <div style={{
+                    position: 'absolute', bottom: -16, left: -20,
+                    background: '#0f172a', borderRadius: 16, padding: '12px 18px',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                  }}>
+                    <ShieldCheck size={18} color="#f59e0b" />
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>0% commission</span>
+                  </div>
+                </>
+              )}
+
+              {/* Mobile inline badges */}
+              {isMobile && (
+                <div style={{ display: 'flex', gap: 10, marginTop: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <div style={{
+                    background: '#fff', borderRadius: 12, padding: '10px 14px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0',
+                    display: 'flex', alignItems: 'center', gap: 6,
+                  }}>
+                    <span style={{ fontSize: 16 }}>⚡</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#0f172a' }}>Live in 60 sec</span>
+                  </div>
+                  <div style={{
+                    background: '#0f172a', borderRadius: 12, padding: '10px 14px',
+                    display: 'flex', alignItems: 'center', gap: 6,
+                  }}>
+                    <ShieldCheck size={14} color="#f59e0b" />
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>0% commission</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -622,22 +729,30 @@ const LandingPage = () => {
         </div>
 
         {/* ══════════════════ PROBLEM → SOLUTION ══════════════════ */}
-        <section style={{ padding: '96px 24px', background: '#fff' }}>
+        <section style={{ padding: isMobile ? '56px 16px' : '96px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>Sound familiar?</span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: '#0f172a',
+                fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
                 Still Managing Bookings Manually?
               </h2>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 40, alignItems: 'center' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr auto 1fr',
+              gap: isMobile ? 24 : 40,
+              alignItems: isMobile ? 'stretch' : 'center',
+            }}>
               {/* Pain points */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {isMobile && (
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>❌ Without BookEase</p>
+                )}
                 {[
                   { emoji: '😩', text: 'Chasing clients on WhatsApp for confirmations' },
                   { emoji: '💸', text: 'No-shows costing you revenue every week' },
@@ -648,33 +763,43 @@ const LandingPage = () => {
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
                     background: '#fef2f2', border: '1px solid #fecaca',
-                    borderRadius: 14, padding: '14px 18px',
+                    borderRadius: 14, padding: isMobile ? '12px 14px' : '14px 18px',
                   }}>
-                    <span style={{ fontSize: 22, flexShrink: 0 }}>{p.emoji}</span>
-                    <span style={{ fontSize: 14, color: '#7f1d1d', fontWeight: 500, lineHeight: 1.4 }}>{p.text}</span>
+                    <span style={{ fontSize: 20, flexShrink: 0 }}>{p.emoji}</span>
+                    <span style={{ fontSize: isMobile ? 13 : 14, color: '#7f1d1d', fontWeight: 500, lineHeight: 1.4 }}>{p.text}</span>
                   </div>
                 ))}
               </div>
 
               {/* Arrow */}
               <div style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                display: 'flex',
+                flexDirection: isMobile ? 'row' : 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 12,
+                margin: isMobile ? '8px 0' : 0,
               }}>
                 <div style={{
-                  width: 56, height: 56, borderRadius: '50%',
+                  width: isMobile ? 44 : 56, height: isMobile ? 44 : 56, borderRadius: '50%',
                   background: 'linear-gradient(135deg, #f59e0b, #ef4444)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: '0 8px 24px rgba(245,158,11,0.4)',
+                  flexShrink: 0,
+                  transform: isMobile ? 'rotate(90deg)' : 'none',
                 }}>
-                  <ArrowRight size={24} color="#fff" />
+                  <ArrowRight size={isMobile ? 20 : 24} color="#fff" />
                 </div>
                 <span style={{ fontSize: 13, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: 1, textAlign: 'center' }}>
-                  Book<br />Ease
+                  Book{isMobile ? ' ' : <br />}Ease
                 </span>
               </div>
 
               {/* Solutions */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {isMobile && (
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#16a34a', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>✅ With BookEase</p>
+                )}
                 {[
                   { emoji: '✅', text: 'Clients self-book from your page — no messages needed' },
                   { emoji: '📲', text: 'Automated SMS reminders eliminate no-shows' },
@@ -685,10 +810,10 @@ const LandingPage = () => {
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
                     background: '#f0fdf4', border: '1px solid #bbf7d0',
-                    borderRadius: 14, padding: '14px 18px',
+                    borderRadius: 14, padding: isMobile ? '12px 14px' : '14px 18px',
                   }}>
-                    <span style={{ fontSize: 22, flexShrink: 0 }}>{s.emoji}</span>
-                    <span style={{ fontSize: 14, color: '#14532d', fontWeight: 500, lineHeight: 1.4 }}>{s.text}</span>
+                    <span style={{ fontSize: 20, flexShrink: 0 }}>{s.emoji}</span>
+                    <span style={{ fontSize: isMobile ? 13 : 14, color: '#14532d', fontWeight: 500, lineHeight: 1.4 }}>{s.text}</span>
                   </div>
                 ))}
               </div>
@@ -697,23 +822,23 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ USE CASES ══════════════════ */}
-        <section style={{ padding: '72px 24px', background: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
+        <section style={{ padding: sectionPadSm, background: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>
               Perfect for
             </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? 10 : 12, justifyContent: 'center' }}>
               {useCases.map((u, i) => (
                 <div key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
+                  display: 'flex', alignItems: 'center', gap: 8,
                   background: '#fff', border: '1px solid #e2e8f0', borderRadius: 999,
-                  padding: '10px 20px',
-                  fontSize: 14, fontWeight: 600, color: '#334155',
+                  padding: isMobile ? '8px 14px' : '10px 20px',
+                  fontSize: isMobile ? 13 : 14, fontWeight: 600, color: '#334155',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                   transition: 'all 0.2s',
                   cursor: 'default',
                 }}>
-                  <span style={{ fontSize: 20 }}>{u.emoji}</span>
+                  <span style={{ fontSize: isMobile ? 16 : 20 }}>{u.emoji}</span>
                   {u.label}
                 </div>
               ))}
@@ -722,32 +847,49 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ HOW IT WORKS ══════════════════ */}
-        <section id="how-it-works" style={{ padding: '96px 24px', background: '#fff' }}>
+        <section id="how-it-works" style={{ padding: sectionPad, background: '#fff' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
               Simple by design
             </span>
             <h2 style={{
               fontFamily: 'Bricolage Grotesque, sans-serif',
-              fontSize: 'clamp(30px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
+              fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
               marginTop: 8, marginBottom: 16, letterSpacing: '-1px',
             }}>
               From Sign-up to First Booking in Minutes
             </h2>
-            <p style={{ color: '#64748b', fontSize: 16, maxWidth: 520, margin: '0 auto 64px' }}>
+            <p style={{ color: '#64748b', fontSize: isMobile ? 15 : 16, maxWidth: 520, margin: '0 auto', marginBottom: isMobile ? 40 : 64 }}>
               No tutorials, no setup calls. BookEase is so intuitive, most users go live within 4 minutes.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, position: 'relative' }}>
-              {/* Connecting line */}
-              <div style={{
-                position: 'absolute', top: 36, left: 'calc(16.66% + 36px)',
-                width: 'calc(66.66% - 72px)', height: 2,
-                background: 'linear-gradient(90deg, #f59e0b 0%, rgba(245,158,11,0.2) 100%)',
-              }} />
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: isMobile ? 32 : 32,
+              position: 'relative',
+            }}>
+              {/* Connecting line — desktop only */}
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute', top: 36, left: 'calc(16.66% + 36px)',
+                  width: 'calc(66.66% - 72px)', height: 2,
+                  background: 'linear-gradient(90deg, #f59e0b 0%, rgba(245,158,11,0.2) 100%)',
+                }} />
+              )}
+
+              {/* Vertical line — mobile only */}
+              {isMobile && (
+                <div style={{
+                  position: 'absolute', top: 36, left: '50%', transform: 'translateX(-50%)',
+                  width: 2, height: 'calc(100% - 72px)',
+                  background: 'linear-gradient(180deg, #f59e0b 0%, rgba(245,158,11,0.1) 100%)',
+                  zIndex: 0,
+                }} />
+              )}
 
               {steps.map((step, i) => (
-                <div key={i} style={{ textAlign: 'center', position: 'relative' }}>
+                <div key={i} style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
                     <div style={{
                       width: 72, height: 72, borderRadius: '50%',
@@ -770,7 +912,7 @@ const LandingPage = () => {
                   </span>
                   <h3 style={{
                     fontFamily: 'Bricolage Grotesque, sans-serif',
-                    fontSize: 22, fontWeight: 700, color: '#0f172a', marginBottom: 10,
+                    fontSize: isMobile ? 20 : 22, fontWeight: 700, color: '#0f172a', marginBottom: 10,
                   }}>
                     {step.title}
                   </h3>
@@ -786,8 +928,8 @@ const LandingPage = () => {
               <Link to="/demo" style={{
                 display: 'inline-flex', alignItems: 'center', gap: 12,
                 background: '#0f172a', color: '#fff',
-                padding: '16px 32px', borderRadius: 14,
-                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 16,
+                padding: isMobile ? '14px 24px' : '16px 32px', borderRadius: 14,
+                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: isMobile ? 15 : 16,
                 textDecoration: 'none', boxShadow: '0 8px 24px rgba(15,23,42,0.2)',
               }}>
                 <Play size={18} fill="#fff" />
@@ -798,25 +940,29 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ FEATURES ══════════════════ */}
-        <section id="features" style={{ padding: '96px 24px', background: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
+        <section id="features" style={{ padding: sectionPad, background: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
                 Built for performance
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(30px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
+                fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
                 Everything You Need. Nothing You Don't.
               </h2>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: isMobile ? 16 : 24,
+            }}>
               {features.map((feature, i) => (
                 <div key={i} className="card-hover" style={{
-                  background: '#fff', borderRadius: 20, padding: 28,
+                  background: '#fff', borderRadius: 20, padding: isMobile ? 22 : 28,
                   border: '1px solid #e2e8f0',
                   boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
                 }}>
@@ -827,7 +973,7 @@ const LandingPage = () => {
                   }}>
                     {feature.icon}
                   </div>
-                  <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
+                  <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: isMobile ? 17 : 18, fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>
                     {feature.title}
                   </h3>
                   <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.65, marginBottom: 16 }}>
@@ -844,7 +990,7 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ TESTIMONIALS ══════════════════ */}
-        <section style={{ padding: '96px 24px', background: '#0f172a', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ padding: sectionPad, background: '#0f172a', position: 'relative', overflow: 'hidden' }}>
           <div style={{
             position: 'absolute', top: -100, right: -100, width: 400, height: 400,
             borderRadius: '50%',
@@ -852,33 +998,37 @@ const LandingPage = () => {
             pointerEvents: 'none',
           }} />
           <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative' }}>
-            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
                 Real stories
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(30px, 4vw, 48px)', fontWeight: 800, color: '#fff',
+                fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
                 Professionals Love BookEase
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 12, fontSize: 16 }}>
+              <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 12, fontSize: isMobile ? 15 : 16 }}>
                 Over 2,000 service businesses trust us to run their bookings.
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+              gap: isMobile ? 16 : 24,
+            }}>
               {testimonials.map((t, i) => (
                 <div key={i} className="card-hover" style={{
                   background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 20, padding: 28,
+                  borderRadius: 20, padding: isMobile ? 22 : 28,
                   backdropFilter: 'blur(10px)',
                 }}>
                   <div style={{ display: 'flex', gap: 2, marginBottom: 16 }}>
                     {[...Array(t.stars)].map((_, j) => <Star key={j} size={16} fill="#f59e0b" color="#f59e0b" />)}
                   </div>
-                  <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.85)', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>
+                  <p style={{ fontSize: isMobile ? 15 : 16, color: 'rgba(255,255,255,0.85)', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>
                     "{t.text}"
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -887,6 +1037,7 @@ const LandingPage = () => {
                       background: t.color, display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14, fontWeight: 800, color: '#0f172a',
                       fontFamily: 'Bricolage Grotesque, sans-serif',
+                      flexShrink: 0,
                     }}>
                       {t.avatar}
                     </div>
@@ -900,7 +1051,7 @@ const LandingPage = () => {
             </div>
 
             {/* Trust badges */}
-            <div style={{ marginTop: 56, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 32, flexWrap: 'wrap' }}>
+            <div style={{ marginTop: 56, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: isMobile ? 20 : 32, flexWrap: 'wrap' }}>
               {[
                 { icon: <ShieldCheck size={18} />, label: 'SSL Secured' },
                 { icon: <CreditCard size={18} />, label: 'Stripe Verified' },
@@ -920,32 +1071,37 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ PRICING ══════════════════ */}
-        <section id="pricing" style={{ padding: '96px 24px', background: '#f8fafc' }}>
+        <section id="pricing" style={{ padding: sectionPad, background: '#f8fafc' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
                 Pricing
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(30px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
+                fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
                 Simple, Honest Pricing
               </h2>
-              <p style={{ color: '#64748b', marginTop: 12, fontSize: 16 }}>
+              <p style={{ color: '#64748b', marginTop: 12, fontSize: isMobile ? 15 : 16 }}>
                 No hidden fees. No transaction cuts. Just one transparent price.
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, alignItems: 'start' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+              gap: isMobile ? 20 : 24,
+              alignItems: 'start',
+            }}>
               {plans.map((plan, i) => (
                 <div key={i} style={{
-                  borderRadius: 24, padding: 32,
+                  borderRadius: 24, padding: isMobile ? 24 : 32,
                   border: plan.popular ? '2px solid #f59e0b' : '1px solid #e2e8f0',
                   background: plan.popular ? '#0f172a' : '#fff',
                   boxShadow: plan.popular ? '0 24px 60px rgba(15,23,42,0.18)' : '0 4px 20px rgba(0,0,0,0.05)',
-                  transform: plan.popular ? 'scale(1.04)' : 'none',
+                  transform: (!isMobile && plan.popular) ? 'scale(1.04)' : 'none',
                   position: 'relative',
                 }}>
                   {plan.popular && (
@@ -979,7 +1135,7 @@ const LandingPage = () => {
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 28, paddingBottom: 28, borderBottom: `1px solid ${plan.popular ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}` }}>
                     <span style={{
                       fontFamily: 'Bricolage Grotesque, sans-serif',
-                      fontSize: 52, fontWeight: 800,
+                      fontSize: isMobile ? 44 : 52, fontWeight: 800,
                       color: plan.popular ? '#fff' : '#0f172a',
                     }}>
                       ₹{plan.price}
@@ -1020,15 +1176,15 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ FAQ ══════════════════ */}
-        <section id="faq" style={{ padding: '96px 24px', background: '#fff' }}>
+        <section id="faq" style={{ padding: sectionPad, background: '#fff' }}>
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 56 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
                 Got questions?
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, color: '#0f172a',
+                fontSize: 'clamp(26px, 4vw, 44px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
                 Frequently Asked Questions
@@ -1042,14 +1198,15 @@ const LandingPage = () => {
                     onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                     style={{
                       width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                      padding: '20px 0', background: 'none', border: 'none', cursor: 'pointer',
-                      textAlign: 'left',
+                      padding: isMobile ? '16px 0' : '20px 0', background: 'none', border: 'none', cursor: 'pointer',
+                      textAlign: 'left', gap: 12,
                     }}
                   >
                     <span style={{
                       fontFamily: 'Bricolage Grotesque, sans-serif',
-                      fontSize: 17, fontWeight: 700,
+                      fontSize: isMobile ? 15 : 17, fontWeight: 700,
                       color: activeFaq === i ? '#f59e0b' : '#0f172a',
+                      lineHeight: 1.4,
                     }}>
                       {faq.q}
                     </span>
@@ -1076,7 +1233,7 @@ const LandingPage = () => {
 
         {/* ══════════════════ FINAL CTA ══════════════════ */}
         <section style={{
-          padding: '96px 24px',
+          padding: sectionPad,
           background: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)',
           position: 'relative', overflow: 'hidden',
         }}>
@@ -1086,32 +1243,32 @@ const LandingPage = () => {
             background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
-          <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+          <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', position: 'relative', padding: isMobile ? '0 4px' : 0 }}>
             <span style={{ fontSize: 40, display: 'block', marginBottom: 20 }}>🚀</span>
             <h2 style={{
               fontFamily: 'Bricolage Grotesque, sans-serif',
-              fontSize: 'clamp(32px, 5vw, 58px)', fontWeight: 800, color: '#fff',
+              fontSize: 'clamp(28px, 5vw, 58px)', fontWeight: 800, color: '#fff',
               letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1,
             }}>
               Ready to Automate Your<br />
               <span style={{ color: '#f59e0b' }}>Bookings & Grow Faster?</span>
             </h2>
-            <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>
+            <p style={{ fontSize: isMobile ? 16 : 18, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>
               Join 2,000+ professionals already using BookEase to save time, reduce no-shows, and grow their revenue.
             </p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: isMobile ? 12 : 16, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link to="/register" style={{
                 background: '#f59e0b', color: '#0f172a',
-                padding: '18px 40px', borderRadius: 14,
-                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 800, fontSize: 17,
+                padding: isMobile ? '15px 28px' : '18px 40px', borderRadius: 14,
+                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 800, fontSize: isMobile ? 15 : 17,
                 textDecoration: 'none', boxShadow: '0 10px 32px rgba(245,158,11,0.45)',
               }}>
                 Start Free — No Credit Card
               </Link>
               <Link to="/demo" style={{
                 border: '1px solid rgba(255,255,255,0.2)', color: '#fff',
-                padding: '18px 32px', borderRadius: 14,
-                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 16,
+                padding: isMobile ? '15px 24px' : '18px 32px', borderRadius: 14,
+                fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: isMobile ? 15 : 16,
                 textDecoration: 'none', background: 'rgba(255,255,255,0.07)',
               }}>
                 Book a Demo
@@ -1124,9 +1281,14 @@ const LandingPage = () => {
         </section>
 
         {/* ══════════════════ FOOTER ══════════════════ */}
-        <footer style={{ background: '#060d1a', padding: '72px 24px 32px', color: '#fff' }}>
+        <footer style={{ background: '#060d1a', padding: isMobile ? '56px 16px 28px' : '72px 24px 32px', color: '#fff' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 56 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr 1fr 1fr',
+              gap: isMobile ? 36 : 48,
+              marginBottom: isMobile ? 40 : 56,
+            }}>
               <div>
                 <div style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
                   Book<span style={{ color: '#f59e0b' }}>Ease</span>
@@ -1152,7 +1314,35 @@ const LandingPage = () => {
                 </div>
               </div>
 
-              {[
+              {/* Footer link columns — 3 cols on desktop, stacked on mobile */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'repeat(3, 1fr)' : '1fr',
+                gap: isMobile ? 24 : 0,
+                gridColumn: isMobile ? '1' : 'auto',
+              }}>
+                {[
+                  { title: 'Product', links: ['Features', 'Pricing', 'Demo', 'Changelog'] },
+                  { title: 'Resources', links: ['Blog', 'Help Center', 'API Docs', 'Community'] },
+                  { title: 'Company', links: ['About Us', 'Careers', 'Privacy Policy', 'Terms'] },
+                ].map((col, i) => (
+                  isMobile ? (
+                    <div key={i}>
+                      <h4 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 14, marginBottom: 14 }}>{col.title}</h4>
+                      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {col.links.map((link, j) => (
+                          <li key={j}>
+                            <a href="#" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13, textDecoration: 'none' }}>{link}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null
+                ))}
+              </div>
+
+              {/* Desktop only: individual columns */}
+              {!isMobile && [
                 { title: 'Product', links: ['Features', 'Pricing', 'Demo', 'Changelog'] },
                 { title: 'Resources', links: ['Blog', 'Help Center', 'API Docs', 'Community'] },
                 { title: 'Company', links: ['About Us', 'Careers', 'Privacy Policy', 'Terms'] },
@@ -1173,7 +1363,12 @@ const LandingPage = () => {
             <div style={{
               borderTop: '1px solid rgba(255,255,255,0.07)',
               paddingTop: 28,
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16,
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              justifyContent: 'space-between',
+              alignItems: isMobile ? 'flex-start' : 'center',
+              gap: 12,
+              flexWrap: 'wrap',
             }}>
               <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>
                 © {new Date().getFullYear()} BookEase Inc. by Avenirya Solutions X Yash Kolnure
