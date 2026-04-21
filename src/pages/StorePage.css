@@ -410,7 +410,7 @@
 .svc-rating-pill svg { color: #f59e0b; }
 .rating-count { font-weight: 400; color: var(--sp-ink-4); }
 
-.svc-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; }
+.svc-card-footer {  align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; }
 .svc-price-block { display: flex; align-items: baseline; gap: 6px; }
 .svc-price { font-size: 1.25rem; font-weight: 800; color: var(--sp-ink); }
 .svc-price-old { font-size: 12px; color: var(--sp-ink-4); text-decoration: line-through; }
@@ -705,7 +705,7 @@
   .svc-card-meta { gap: 6px; margin-bottom: 8px; }
   .svc-card-meta span { font-size: 10px; }
   .svc-price { font-size: 1.1rem; }
-  .svc-book-btn { font-size: 11px; padding: 7px 10px; }
+  .svc-book-btn { font-size: 11px; padding: 7px 10px; place-content: center;}
   .svc-row-thumb { width: 100px; }
   .svc-row-name { font-size: 13px; }
   .svc-row-desc { display: none; }
