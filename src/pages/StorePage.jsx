@@ -8,6 +8,7 @@ import {
   ArrowUpDown, CheckCircle2, TrendingUp, DollarSign,
 } from 'lucide-react';
 import './StorePage.css';
+import './StoreThemes.css';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -384,7 +385,7 @@ export default function StorePage() {
   );
 
   return (
-    <div className="sp-root">
+    <div className="sp-root" data-theme={store.theme || 'classic'}>
 
       {/* ══ BANNER ══ */}
       <div className="sp-banner">

@@ -41,6 +41,7 @@ export default function StoreSettingsPage() {
         phone: store.phone, email: store.email, website: store.website,
         address: store.address, socialLinks: store.socialLinks,
         businessHours: store.businessHours, currency: store.currency,
+        theme: store.theme,
       });
       setStore(res.data.store);
       if (setAuthStore) setAuthStore(res.data.store);
@@ -132,7 +133,7 @@ const uploadFile = async (file, type) => {
       </div>
 
       <div className="tabs">
-        {[['general','General'],['media','Media'],['hours','Business Hours'],['payment','Payment']].map(([k,l]) => (
+        {[['general','General'],['media','Media'],['hours','Business Hours'],['payment','Payment'],['theme','Theme']].map(([k,l]) => (
           <button key={k} className={`tab ${tab===k?'active':''}`} onClick={() => setTab(k)}>{l}</button>
         ))}
       </div>
@@ -299,6 +300,94 @@ const uploadFile = async (file, type) => {
       {tab === 'payment' && (
         <div className="card animate-fadeIn">
           <PaymentSettings store={store} setStore={setStore} />
+        </div>
+      )}
+
+      {/* Theme */}
+      {tab === 'theme' && (
+        <div className="card animate-fadeIn">
+          <h3 style={{fontSize:'1rem',fontWeight:700,marginBottom:4}}>Store Page Theme</h3>
+          <p style={{color:'var(--ink-muted)',fontSize:14,marginBottom:24}}>Choose a colour theme for your public store page. Changes are saved automatically.</p>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))',gap:14}}>
+            {[
+              { id:'classic', name:'Classic',  colors:['#f59e0b','#1e3a5f','#f8fafc'],   dark:false },
+              { id:'minimal', name:'Minimal',  colors:['#18181b','#52525b','#fafafa'],   dark:false },
+              { id:'ocean',   name:'Ocean',    colors:['#0ea5e9','#0369a1','#f0f9ff'],   dark:false },
+              { id:'nature',  name:'Nature',   colors:['#16a34a','#14532d','#f0fdf4'],   dark:false },
+              { id:'sunset',  name:'Sunset',   colors:['#f97316','#c2410c','#fff7ed'],   dark:false },
+              { id:'rose',    name:'Rose',     colors:['#e11d48','#be123c','#fff1f2'],   dark:false },
+              { id:'luxury',  name:'Luxury',   colors:['#c084fc','#2d1b4e','#0d0b14'],   dark:true  },
+            ].map(t => {
+              const active = (store.theme || 'classic') === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    const updated = { ...store, theme: t.id };
+                    setStore(updated);
+                    storeAPI.updateMyStore({ theme: t.id })
+                      .then(r => { setStore(r.data.store); if (setAuthStore) setAuthStore(r.data.store); toast.success(`Theme changed to ${t.name}`); })
+                      .catch(() => toast.error('Failed to save theme'));
+                  }}
+                  style={{
+                    border: active ? '2.5px solid var(--primary)' : '2px solid var(--border)',
+                    borderRadius: 14,
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    background: 'none',
+                    padding: 0,
+                    position: 'relative',
+                    transition: 'box-shadow 0.18s',
+                    boxShadow: active ? '0 0 0 4px rgba(var(--primary-rgb),0.15)' : 'none',
+                  }}
+                >
+                  {/* Colour preview */}
+                  <div style={{
+                    height: 72,
+                    background: `linear-gradient(135deg, ${t.colors[1]} 0%, ${t.colors[0]} 100%)`,
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-end',
+                    padding: '0 8px 8px 0',
+                  }}>
+                    {active && (
+                      <span style={{
+                        background: '#fff',
+                        borderRadius: '50%',
+                        width: 20, height: 20,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 12, color: '#16a34a', fontWeight: 900,
+                      }}>✓</span>
+                    )}
+                  </div>
+                  {/* Page bg swatch + label */}
+                  <div style={{
+                    background: t.colors[2],
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 6,
+                  }}>
+                    <span style={{
+                      fontSize: 13, fontWeight: active ? 700 : 600,
+                      color: t.dark ? '#e9d5ff' : '#0f172a',
+                    }}>{t.name}</span>
+                    <span style={{
+                      width: 12, height: 12, borderRadius: '50%',
+                      background: t.colors[0],
+                      border: '2px solid rgba(0,0,0,0.12)',
+                      flexShrink: 0,
+                    }}/>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div style={{marginTop:20,padding:'14px 16px',borderRadius:10,background:'var(--bg-soft)',fontSize:13,color:'var(--ink-muted)',display:'flex',gap:10,alignItems:'flex-start'}}>
+            <span style={{fontSize:16}}>💡</span>
+            <span>Themes instantly update your public store page. Customers will see the new look on their next visit.</span>
+          </div>
         </div>
       )}
     </div>
