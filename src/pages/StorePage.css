@@ -420,6 +420,7 @@
   font-size: 12px; font-weight: 700;
   padding: 8px 14px; border-radius: var(--sp-radius-sm);
   transition: background 0.15s; white-space: nowrap; flex-shrink: 0;
+  width: -webkit-fill-available;
 }
 .svc-book-btn:hover { background: #d97706; }
 
