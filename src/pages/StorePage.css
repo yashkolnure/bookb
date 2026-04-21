@@ -417,7 +417,7 @@
 .svc-book-btn {
   display: inline-flex; align-items: center; gap: 4px;
   background: #f59e0b; color: #1c1005;
-  font-size: 12px; font-weight: 700;
+  font-size: 15px; font-weight: 700;
   padding: 8px 14px; border-radius: var(--sp-radius-sm);
   transition: background 0.15s; white-space: nowrap; flex-shrink: 0;
   width: -webkit-fill-available;
@@ -706,7 +706,7 @@
   .svc-card-meta { gap: 6px; margin-bottom: 8px; }
   .svc-card-meta span { font-size: 10px; }
   .svc-price { font-size: 1.1rem; }
-  .svc-book-btn { font-size: 11px; padding: 7px 10px; place-content: center;}
+  .svc-book-btn { font-size: 15px; padding: 7px 10px; place-content: center;}
   .svc-row-thumb { width: 100px; }
   .svc-row-name { font-size: 13px; }
   .svc-row-desc { display: none; }
