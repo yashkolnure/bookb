@@ -65,14 +65,20 @@ function ImageManager({ images, onChange }) {
       wpFormData.append('file', file);
       wpFormData.append('status', 'publish');
 
-      const wpRes = await fetch(WP_API_URL, {
-        method: 'POST',
-        headers: {
-          'Authorization': AUTH_HEADER,
-          'Content-Disposition': `attachment; filename="${file.name}"`,
-        },
-        body: wpFormData,
-      });
+const wpRes = await fetch(WP_API_URL, {
+  method: 'POST',
+  headers: {
+    'Authorization': AUTH_HEADER,
+    'Content-Disposition': `attachment; filename="${file.name}"`,
+  },
+  body: wpFormData,
+});
+
+if (!wpRes.ok) {
+  const errBody = await wpRes.json(); // ADD THIS
+  console.error('WP Error:', errBody); // ADD THIS
+  throw new Error('WordPress upload failed');
+}
 
       if (!wpRes.ok) throw new Error('WordPress upload failed');
 
