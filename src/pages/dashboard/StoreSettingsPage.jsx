@@ -49,16 +49,56 @@ export default function StoreSettingsPage() {
     finally { setSaving(false); }
   };
 
-  const uploadFile = async (file, type) => {
-    const fd = new FormData();
-    fd.append(type, file);
-    try {
-      const res = type === 'logo' ? await storeAPI.uploadLogo(fd) : await storeAPI.uploadBanner(fd);
-      setStore(p => ({ ...p, [type]: res.data[type] }));
-      toast.success(`${type.charAt(0).toUpperCase()+type.slice(1)} updated`);
-    } catch { toast.error('Upload failed'); }
-  };
+  const WP_USERNAME = "yashkolnure58@gmail.com";
+const WP_APP_PASSWORD = "05mq iTLF UvJU dyaz 7KxQ 8pyc";
+const WP_SITE_URL = "https://website.avenirya.com";
 
+// Generate the Auth header
+const AUTH_HEADER = `Basic ${btoa(`${WP_USERNAME}:${WP_APP_PASSWORD}`)}`;
+const WP_API_URL = `${WP_SITE_URL}/wp-json/wp/v2/media`;
+const uploadFile = async (file, type) => {
+  setSaving(true);
+  const toastId = toast.loading(`Uploading ${type}...`);
+  try {
+    const wpFormData = new FormData();
+    wpFormData.append('file', file);
+    wpFormData.append('title', `${store.name} ${type}`);
+    wpFormData.append('status', 'publish');
+
+    const wpRes = await fetch(WP_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': AUTH_HEADER,
+        'Content-Disposition': `attachment; filename="${file.name}"`,
+      },
+      body: wpFormData,
+    });
+
+    if (!wpRes.ok) throw new Error('WordPress upload failed');
+
+    const wpData = await wpRes.json();
+    const wordpressImageUrl = wpData.source_url; // This is the https://website.avenirya.com/... link
+
+    // CRITICAL: Update your DB with the NEW WordPress URL
+    const res = await storeAPI.updateMyStore({
+      [type]: wordpressImageUrl 
+    });
+
+    // Update local state immediately so the UI changes without a refresh
+    const updatedStore = res.data.store;
+    setStore(updatedStore);
+
+    if (setAuthStore) setAuthStore(updatedStore);
+
+    toast.success(`${type} updated successfully!`, { id: toastId });
+
+  } catch (err) {
+    console.error("Upload Error:", err);
+    toast.error('Upload failed', { id: toastId });
+  } finally {
+    setSaving(false);
+  }
+};
   const copyLink = () => {
     const link = `${window.location.origin}/store/${store?.slug}`;
     navigator.clipboard.writeText(link).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
@@ -68,7 +108,7 @@ export default function StoreSettingsPage() {
   if (!store) return null;
 
   const storeLink = `${window.location.origin}/store/${store.slug}`;
-  const BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5003';
 
   return (
     <div style={{maxWidth:780}}>
@@ -172,12 +212,22 @@ export default function StoreSettingsPage() {
         <div className="card animate-fadeIn">
           <div className="media-section">
             <div className="media-label">Store Logo</div>
-            <div className="media-preview logo-preview">
-              {store.logo
-                ? <img src={`${BASE_URL}${store.logo}`} alt="Logo" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-                : <div className="media-placeholder">{store.name?.[0]}</div>
-              }
-            </div>
+ <div className="media-preview logo-preview">
+  {store.logo ? (
+    <img 
+      // If it's a full URL (WP), use it. Otherwise, don't fallback to localhost in production.
+      src={store.logo.startsWith('http') ? store.logo : `${BASE_URL}${store.logo}`} 
+      alt="Logo" 
+      style={{width:'100%',height:'100%',objectFit:'cover'}}
+      onError={(e) => {
+        e.target.onerror = null;
+        e.target.src = "https://placehold.co/100x100?text=No+Image";
+      }}
+    />
+  ) : (
+    <div className="media-placeholder">{store.name?.[0]}</div>
+  )}
+</div>
             <input ref={logoRef} type="file" accept="image/*" style={{display:'none'}} onChange={e => e.target.files[0] && uploadFile(e.target.files[0],'logo')} />
             <button className="btn btn-outline btn-sm" onClick={() => logoRef.current.click()}>
               <Upload size={14}/> Upload Logo
@@ -186,12 +236,22 @@ export default function StoreSettingsPage() {
           <div className="divider"/>
           <div className="media-section">
             <div className="media-label">Store Banner</div>
-            <div className="media-preview banner-preview">
-              {store.banner
-                ? <img src={`${BASE_URL}${store.banner}`} alt="Banner" style={{width:'100%',height:'100%',objectFit:'cover'}}/>
-                : <div className="media-placeholder" style={{fontSize:'1.2rem'}}>No banner uploaded</div>
-              }
-            </div>
+  <div className="media-preview banner-preview">
+    {store.banner ? (
+      <img 
+        // Check if banner starts with http. If so, use it directly.
+        src={store.banner.startsWith('http') ? store.banner : `${BASE_URL}${store.banner}`} 
+        alt="Banner" 
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        onError={(e) => {
+          e.target.onerror = null; 
+          e.target.src = "https://placehold.co/600x200?text=Image+Load+Error";
+        }}
+      />
+    ) : (
+      <div className="media-placeholder" style={{ fontSize: '1.2rem' }}>No banner uploaded</div>
+    )}
+  </div>
             <input ref={bannerRef} type="file" accept="image/*" style={{display:'none'}} onChange={e => e.target.files[0] && uploadFile(e.target.files[0],'banner')} />
             <button className="btn btn-outline btn-sm" onClick={() => bannerRef.current.click()}>
               <Upload size={14}/> Upload Banner

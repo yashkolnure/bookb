@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { serviceAPI } from '../../api/api';
 import { Plus, Edit2, Trash2, Clock, Tag, Star, ChevronDown, ChevronUp, X, Check, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './ServicesPage.css';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
+const WP_USERNAME = "yashkolnure58@gmail.com";
+const WP_APP_PASSWORD = "05mq iTLF UvJU dyaz 7KxQ 8pyc";
+const WP_SITE_URL = "https://website.avenirya.com";
+const AUTH_HEADER = `Basic ${btoa(`${WP_USERNAME}:${WP_APP_PASSWORD}`)}`;
+const WP_API_URL = `${WP_SITE_URL}/wp-json/wp/v2/media`;
 const emptyService = {
   name: '', description: '', category: '', tags: '', price: '',
   discountedPrice: '', duration: 60, isActive: true, images: [],
@@ -41,90 +45,92 @@ function TimeSlotEditor({ dayAvail, onChange }) {
     </div>
   );
 }
-
-/* ── WordPress Image Manager ── */
 function ImageManager({ images, onChange }) {
-  const [urlInput, setUrlInput] = useState('');
-  const [previewError, setPreviewError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef();
 
-  const isValidUrl = (url) => { try { new URL(url); return true; } catch { return false; } };
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (images.length >= 8) {
+      toast.error('Maximum 8 images allowed');
+      return;
+    }
 
-  const addUrl = () => {
-    const url = urlInput.trim();
-    if (!url) return;
-    if (!isValidUrl(url)) { toast.error('Enter a valid URL'); return; }
-    if (images.includes(url)) { toast.error('Image already added'); return; }
-    if (images.length >= 8) { toast.error('Maximum 8 images'); return; }
-    onChange([...images, url]);
-    setUrlInput('');
-    setPreviewError(false);
+    setUploading(true);
+    const toastId = toast.loading('Uploading to WordPress...');
+
+    try {
+      const wpFormData = new FormData();
+      wpFormData.append('file', file);
+      wpFormData.append('status', 'publish');
+
+      const wpRes = await fetch(WP_API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': AUTH_HEADER,
+          'Content-Disposition': `attachment; filename="${file.name}"`,
+        },
+        body: wpFormData,
+      });
+
+      if (!wpRes.ok) throw new Error('WordPress upload failed');
+
+      const wpData = await wpRes.json();
+      const newImageUrl = wpData.source_url;
+
+      // Add the new WordPress URL to the array
+      onChange([...images, newImageUrl]);
+      toast.success('Image added!', { id: toastId });
+    } catch (err) {
+      console.error(err);
+      toast.error('Upload failed', { id: toastId });
+    } finally {
+      setUploading(false);
+      e.target.value = ''; // Reset input
+    }
   };
 
   const removeImage = (idx) => onChange(images.filter((_, i) => i !== idx));
 
-  const moveLeft = (idx) => {
+  const setAsCover = (idx) => {
     const arr = [...images];
-    [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+    const [selected] = arr.splice(idx, 1);
+    arr.unshift(selected); // Move to front
     onChange(arr);
   };
 
   return (
     <div className="image-manager">
-      {/* Instructions */}
-      <div className="wp-instructions">
-        <div className="wp-instructions-title"><LinkIcon size={13} /> Paste your WordPress media URL</div>
-        <div className="wp-instructions-steps">
-          <span>1. Open WordPress → Media Library</span>
-          <span>2. Click any image → copy the <strong>File URL</strong></span>
-          <span>3. Paste it below and click Add</span>
-        </div>
-      </div>
-
-      {/* URL Input Row */}
-      <div className="wp-url-row">
-        <input
-          className="form-input"
-          placeholder="https://yoursite.com/wp-content/uploads/photo.jpg"
-          value={urlInput}
-          onChange={e => { setUrlInput(e.target.value); setPreviewError(false); }}
-          onKeyDown={e => e.key === 'Enter' && addUrl()}
+      <div className="wp-upload-zone" onClick={() => !uploading && fileInputRef.current.click()}>
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          accept="image/*" 
+          onChange={handleFileUpload} 
         />
-        <button className="btn btn-gold btn-sm" onClick={addUrl} disabled={!urlInput || images.length >= 8}>
-          Add
-        </button>
+        {uploading ? (
+          <div className="spinner" />
+        ) : (
+          <>
+            <Plus size={24} />
+            <span>Upload Image to WordPress</span>
+          </>
+        )}
       </div>
 
-      {/* Live URL preview */}
-      {urlInput && (
-        <div className="wp-live-preview">
-          {!previewError ? (
-            <img
-              src={urlInput}
-              alt="preview"
-              onError={() => setPreviewError(true)}
-              onLoad={() => setPreviewError(false)}
-            />
-          ) : (
-            <div className="wp-preview-error">⚠ Cannot load — check the URL</div>
-          )}
-          <span className="wp-preview-caption">Preview</span>
-        </div>
-      )}
-
-      {/* Image Grid */}
       {images.length > 0 ? (
-        <div className="image-grid">
+        <div className="image-grid" style={{ marginTop: '16px' }}>
           {images.map((url, idx) => (
             <div key={url + idx} className={`image-thumb ${idx === 0 ? 'image-thumb-primary' : ''}`}>
-              <img
-                src={url}
-                alt={`img ${idx + 1}`}
-                onError={e => { e.currentTarget.style.opacity = '0.3'; }}
-              />
+              <img src={url} alt="" />
               {idx === 0 && <div className="primary-badge">Cover</div>}
               <div className="image-thumb-actions">
                 {idx > 0 && (
-                  <button className="thumb-action-btn" title="Set as cover" onClick={() => moveLeft(idx)}>↑</button>
+                  <button className="thumb-action-btn" title="Set as cover" onClick={() => setAsCover(idx)}>
+                    <Check size={11} />
+                  </button>
                 )}
                 <button className="thumb-action-btn thumb-del" title="Remove" onClick={() => removeImage(idx)}>
                   <X size={11} />
@@ -136,14 +142,9 @@ function ImageManager({ images, onChange }) {
       ) : (
         <div className="image-empty">
           <ImageIcon size={28} />
-          <p>No images yet</p>
+          <p>No images uploaded yet</p>
         </div>
       )}
-
-      <div className="image-count-bar">
-        <span>{images.length} / 8 images</span>
-        {images.length > 0 && <span className="image-count-hint">First image is used as the cover</span>}
-      </div>
     </div>
   );
 }
