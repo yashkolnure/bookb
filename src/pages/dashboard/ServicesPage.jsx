@@ -49,54 +49,47 @@ function ImageManager({ images, onChange }) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef();
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (images.length >= 8) {
-      toast.error('Maximum 8 images allowed');
-      return;
+const handleFileUpload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (images.length >= 8) { toast.error('Maximum 8 images allowed'); return; }
+
+  setUploading(true);
+  const toastId = toast.loading('Uploading image...');
+
+  try {
+    const wpFormData = new FormData();
+    wpFormData.append('file', file);
+    wpFormData.append('title', file.name);   // ← add title like store page does
+    wpFormData.append('status', 'publish');
+
+    const wpRes = await fetch(WP_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': AUTH_HEADER,
+        'Content-Disposition': `attachment; filename="${file.name}"`,
+        // ❌ DO NOT set Content-Type here — browser sets it with boundary automatically
+      },
+      body: wpFormData,
+    });
+
+    if (!wpRes.ok) {
+      const errBody = await wpRes.json();
+      console.error('WP Error:', errBody);
+      throw new Error('WordPress upload failed');
     }
 
-    setUploading(true);
-    const toastId = toast.loading('Uploading to WordPress...');
-
-    try {
-      const wpFormData = new FormData();
-      wpFormData.append('file', file, file.name);
-      wpFormData.append('status', 'publish');
-
-const wpRes = await fetch(WP_API_URL, {
-  method: 'POST',
-  headers: {
-    'Authorization': AUTH_HEADER,
-    'Content-Disposition': `attachment; filename="${file.name}"`,
-    'Content-Type': file.type, 
-  },
-  body: wpFormData,
-});
-
-if (!wpRes.ok) {
-  const errBody = await wpRes.json(); // ADD THIS
-  console.error('WP Error:', errBody); // ADD THIS
-  throw new Error('WordPress upload failed');
-}
-
-      if (!wpRes.ok) throw new Error('WordPress upload failed');
-
-      const wpData = await wpRes.json();
-      const newImageUrl = wpData.source_url;
-
-      // Add the new WordPress URL to the array
-      onChange([...images, newImageUrl]);
-      toast.success('Image added!', { id: toastId });
-    } catch (err) {
-      console.error(err);
-      toast.error('Upload failed', { id: toastId });
-    } finally {
-      setUploading(false);
-      e.target.value = ''; // Reset input
-    }
-  };
+    const wpData = await wpRes.json();
+    onChange([...images, wpData.source_url]);
+    toast.success('Image added!', { id: toastId });
+  } catch (err) {
+    console.error(err);
+    toast.error('Upload failed', { id: toastId });
+  } finally {
+    setUploading(false);
+    e.target.value = '';
+  }
+};
 
   const removeImage = (idx) => onChange(images.filter((_, i) => i !== idx));
 
