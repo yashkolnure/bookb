@@ -675,11 +675,11 @@
 /* Tablet */
 @media (max-width: 768px) {
   .sp-banner { height: 180px; }
-  .sp-logo-wrap { width: 72px; height: 72px; top: -36px; left: 16px; border-radius: 14px; }
+  .sp-logo-wrap { width: 90px; height: 90px; top: -36px; left: 16px; border-radius: 14px; }
   .sp-header-inner { padding: 0 16px; }
   .sp-header-body { padding-left: 88px; padding-top: 10px; flex-direction: column; gap: 12px; }
   .sp-header-right { flex-direction: row; flex-wrap: wrap; align-items: flex-start; gap: 6px; }
-  .sp-store-name { font-size: 1.4rem; }
+  .sp-store-name { font-size: 1.8rem; }
   .sp-contact-btn span { display: none; }
   .sp-contact-btn { padding: 8px 10px; }
   .sp-body { padding: 20px 16px 60px; }
