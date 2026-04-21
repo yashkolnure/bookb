@@ -62,7 +62,7 @@ function ImageManager({ images, onChange }) {
 
     try {
       const wpFormData = new FormData();
-      wpFormData.append('file', file);
+      wpFormData.append('file', file, file.name);
       wpFormData.append('status', 'publish');
 
 const wpRes = await fetch(WP_API_URL, {
@@ -70,6 +70,7 @@ const wpRes = await fetch(WP_API_URL, {
   headers: {
     'Authorization': AUTH_HEADER,
     'Content-Disposition': `attachment; filename="${file.name}"`,
+    'Content-Type': file.type, 
   },
   body: wpFormData,
 });
