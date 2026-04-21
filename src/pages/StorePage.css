@@ -115,7 +115,7 @@
   background: #fef3c7; color: #92400e;
   border: 1px solid #fde68a;
   font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 100px; margin-bottom: 8px;
+  padding: 4px 10px; border-radius: 100px; margin-bottom: 8px; margin-top: 26px;
 }
 
 .sp-store-name {
