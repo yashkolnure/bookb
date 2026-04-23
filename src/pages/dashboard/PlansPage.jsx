@@ -4,8 +4,6 @@ import { storeAPI } from '../../api/api';
 import { Check, Clock, Shield, RefreshCw, X, Phone, Mail, MessageCircle } from 'lucide-react';
 import './PlansPage.css';
 
-const email=process.env.email;
-const phone=process.env.phone;
 const PLANS = [
   {
     id: 'free',
@@ -77,6 +75,9 @@ export default function PlansPage() {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  
+const email=process.env.email;
+const phone=process.env.phone;
 
   const fetchSubscription = async () => {
     setFetchLoading(true);
