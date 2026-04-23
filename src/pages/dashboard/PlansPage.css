@@ -200,3 +200,106 @@
 
 /* Expired date color */
 .expiring-soon { color: #c4432a !important; font-weight: 600; }
+
+/* Contact Modal */
+.plans-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.plans-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.15);
+  text-align: center;
+}
+.plans-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: background 0.2s;
+}
+.plans-modal-close:hover { background: #e2e8f0; }
+.plans-modal-icon { font-size: 44px; margin-bottom: 12px; }
+.plans-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px;
+}
+.plans-modal-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+.plans-contact-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.plans-contact-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+}
+.plans-contact-card:hover {
+  border-color: var(--color-primary, #3a7d5e);
+  background: #f8fffe;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.plans-contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.plans-contact-icon-phone { background: #eff6ff; color: #3b82f6; }
+.plans-contact-icon-email { background: #fef3c7; color: #d97706; }
+.plans-contact-icon-whatsapp { background: #dcfce7; color: #16a34a; }
+.plans-contact-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+.plans-contact-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+.plans-modal-note {
+  margin: 20px 0 0;
+  font-size: 13px;
+  color: #94a3b8;
+}

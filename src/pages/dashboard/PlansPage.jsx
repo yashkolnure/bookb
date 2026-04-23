@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { storeAPI } from '../../api/api';
-import { Check, Clock, Shield, RefreshCw } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { Check, Clock, Shield, RefreshCw, X, Phone, Mail, MessageCircle } from 'lucide-react';
 import './PlansPage.css';
 
 const PLANS = [
@@ -11,7 +10,6 @@ const PLANS = [
     name: '7 Day Free Trial',
     price: '₹0',
     period: '/ 7 days',
-    buttonText: 'Free Trial',
     features: [
       '50 Bookings / month',
       'Basic Analytics',
@@ -26,7 +24,7 @@ const PLANS = [
     name: 'Quarterly',
     price: '₹1,999',
     period: '/ 3 months',
-    buttonText: 'Get Quarterly',
+    tag: 'GREAT VALUE',
     features: [
       'Unlimited Bookings',
       'SMS + Email Reminders',
@@ -42,7 +40,7 @@ const PLANS = [
     name: 'Half Yearly',
     price: '₹3,499',
     period: '/ 6 months',
-    buttonText: 'Get Half Yearly',
+    tag: 'MOST POPULAR',
     features: [
       'Everything in Quarterly',
       'Multi-staff Accounts',
@@ -58,7 +56,7 @@ const PLANS = [
     name: 'Yearly',
     price: '₹5,999',
     period: '/ 1 year',
-    buttonText: 'Get Yearly',
+    tag: 'BEST DEAL',
     features: [
       'Everything in Half Yearly',
       'White-label Domain',
@@ -74,60 +72,39 @@ const PLANS = [
 export default function PlansPage() {
   const { store, setStore } = useAuth();
   const [subscription, setSubscription] = useState(null);
-  const [upgradeLoading, setUpgradeLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
-  // Always fetch fresh subscription info from server on mount
   const fetchSubscription = async () => {
     setFetchLoading(true);
     try {
       const res = await storeAPI.getSubscription();
       if (res.data.success) {
         setSubscription(res.data.subscription);
-        // Keep context/localStorage in sync
         if (store) {
           const updated = { ...store, subscription: res.data.subscription };
           setStore(updated);
           localStorage.setItem('store', JSON.stringify(updated));
         }
       }
-    } catch (err) {
-      // Fallback to context data if API fails
+    } catch {
       setSubscription(store?.subscription || null);
     } finally {
       setFetchLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchSubscription();
-  }, []);
+  useEffect(() => { fetchSubscription(); }, []);
 
-  const handleUpgrade = async (planId) => {
-    if (planId === 'free') return;
-    if (subscription?.planId === planId) return;
-    setUpgradeLoading(true);
-    try {
-      const res = await storeAPI.upgradePlan(planId);
-      if (res.data.success) {
-        const updatedStore = res.data.store;
-        const newSub = updatedStore.subscription;
-        setSubscription(newSub);
-        setStore(updatedStore);
-        localStorage.setItem('store', JSON.stringify(updatedStore));
-        toast.success(`Successfully upgraded to ${newSub?.planName}!`);
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Upgrade failed. Please try again.');
-    } finally {
-      setUpgradeLoading(false);
-    }
+  const handlePlanClick = (plan) => {
+    if (subscription?.planId === plan.id) return;
+    setSelectedPlan(plan);
+    setShowContactModal(true);
   };
 
   const expiryDate = subscription?.expiryDate
-    ? new Date(subscription.expiryDate).toLocaleDateString('en-IN', {
-        day: 'numeric', month: 'short', year: 'numeric',
-      })
+    ? new Date(subscription.expiryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     : '—';
 
   const daysLeft = subscription?.expiryDate
@@ -144,7 +121,7 @@ export default function PlansPage() {
           <h1 className="page-title">Subscription Plan</h1>
           <p className="page-subtitle">Choose the best plan for your business growth</p>
         </div>
-        <button className="plans-refresh-btn" onClick={fetchSubscription} disabled={fetchLoading} title="Refresh subscription info">
+        <button className="plans-refresh-btn" onClick={fetchSubscription} disabled={fetchLoading}>
           <RefreshCw size={15} className={fetchLoading ? 'spin' : ''} />
           Refresh
         </button>
@@ -222,10 +199,10 @@ export default function PlansPage() {
               </ul>
               <button
                 className={`btn ${isCurrentPlan ? 'btn-current' : plan.popular ? 'btn-primary' : 'btn-outline'} btn-full`}
-                onClick={() => handleUpgrade(plan.id)}
-                disabled={upgradeLoading || fetchLoading || isCurrentPlan || plan.id === 'free'}
+                onClick={() => handlePlanClick(plan)}
+                disabled={isCurrentPlan || fetchLoading}
               >
-                {upgradeLoading && !isCurrentPlan ? 'Processing...' : isCurrentPlan ? '✓ Current Plan' : plan.buttonText}
+                {isCurrentPlan ? '✓ Current Plan' : 'Upgrade to this Plan'}
               </button>
             </div>
           );
@@ -234,8 +211,66 @@ export default function PlansPage() {
 
       <div className="plans-guarantee">
         <Shield size={16} />
-        <span>All plans include core features. Prices are inclusive of all taxes. Contact support to switch plans.</span>
+        <span>To upgrade or change your plan, please contact our customer support team.</span>
       </div>
+
+      {/* Contact Customer Care Modal */}
+      {showContactModal && (
+        <div className="plans-modal-overlay" onClick={() => setShowContactModal(false)}>
+          <div className="plans-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="plans-modal-close" onClick={() => setShowContactModal(false)}>
+              <X size={18} />
+            </button>
+
+            <div className="plans-modal-icon">🎯</div>
+            <h3 className="plans-modal-title">Interested in {selectedPlan?.name}?</h3>
+            <p className="plans-modal-subtitle">
+              To upgrade your plan, please reach out to our support team. We'll get you set up right away!
+            </p>
+
+            <div className="plans-contact-options">
+              <a href="tel:+919999999999" className="plans-contact-card">
+                <div className="plans-contact-icon plans-contact-icon-phone">
+                  <Phone size={20} />
+                </div>
+                <div>
+                  <div className="plans-contact-label">Call Us</div>
+                  <div className="plans-contact-value">+91 99999 99999</div>
+                </div>
+              </a>
+
+              <a href="mailto:support@avenirya.com" className="plans-contact-card">
+                <div className="plans-contact-icon plans-contact-icon-email">
+                  <Mail size={20} />
+                </div>
+                <div>
+                  <div className="plans-contact-label">Email Us</div>
+                  <div className="plans-contact-value">support@avenirya.com</div>
+                </div>
+              </a>
+
+              <a
+                href="https://wa.me/919999999999"
+                target="_blank"
+                rel="noreferrer"
+                className="plans-contact-card"
+              >
+                <div className="plans-contact-icon plans-contact-icon-whatsapp">
+                  <MessageCircle size={20} />
+                </div>
+                <div>
+                  <div className="plans-contact-label">WhatsApp</div>
+                  <div className="plans-contact-value">Chat with us</div>
+                </div>
+              </a>
+            </div>
+
+            <p className="plans-modal-note">
+              Our team is available <strong>Mon–Sat, 10am–7pm IST</strong>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
