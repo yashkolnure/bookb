@@ -122,3 +122,81 @@
   color: var(--ink-muted);
   font-size: 14px;
 }
+/* New plan grid + additions */
+.pricing-grid-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+.plan-card.current {
+  border-color: var(--color-primary, #3a7d5e) !important;
+  background: rgba(58,125,94,0.04);
+}
+.btn-current {
+  background: rgba(58,125,94,0.12);
+  color: var(--color-primary, #3a7d5e);
+  border: 1.5px solid var(--color-primary, #3a7d5e);
+  cursor: default;
+}
+.expiring-soon { color: #c4432a; font-weight: 600; }
+.plans-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+  color: #888;
+  font-size: 13px;
+}
+@media (max-width: 1100px) {
+  .pricing-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+  .pricing-grid-4 { grid-template-columns: 1fr !important; }
+}
+
+/* Refresh button */
+.plans-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--color-border, #e2e8f0);
+  color: var(--color-text-muted, #64748b);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.plans-refresh-btn:hover:not(:disabled) {
+  border-color: var(--color-primary, #3a7d5e);
+  color: var(--color-primary, #3a7d5e);
+}
+.plans-refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Spin animation for refresh icon */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.8s linear infinite; }
+
+/* Skeleton loader */
+.plans-skeleton {
+  color: var(--color-text-muted, #64748b);
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+/* Current plan ribbon */
+.current-plan-ribbon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-primary, #3a7d5e);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.plan-card { position: relative; }
+
+/* Expired date color */
+.expiring-soon { color: #c4432a !important; font-weight: 600; }

@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import SuperAdminLogin from './pages/superadmin/SuperAdminLogin';
+import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
 
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -47,6 +49,8 @@ function AppRoutes() {
         <Route path="plans" element={<PlansPage />} />
         <Route path="calendar" element={<CalendarPage />} />
       </Route>
+      <Route path="/superadmin/login" element={<SuperAdminLogin />} />
+      <Route path="/superadmin/dashboard" element={<SuperAdminDashboard />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

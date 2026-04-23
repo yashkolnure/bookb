@@ -90,3 +90,32 @@ export const reviewAPI = {
 };
 
 export default api;
+
+// ── Super Admin API ──
+const superAdminApi = axios.create({ baseURL: BASE_URL });
+superAdminApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('superadmin_token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+superAdminApi.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem('superadmin_token');
+      window.location.href = '/superadmin/login';
+    }
+    return Promise.reject(err);
+  }
+);
+
+export const superAdminAPI = {
+  login: (data) => superAdminApi.post('/superadmin/login', data),
+  getStats: () => superAdminApi.get('/superadmin/stats'),
+  getAccounts: () => superAdminApi.get('/superadmin/accounts'),
+  getAccount: (storeId) => superAdminApi.get(`/superadmin/accounts/${storeId}`),
+  changePlan: (storeId, planId) => superAdminApi.put(`/superadmin/accounts/${storeId}/plan`, { planId }),
+  extendExpiry: (storeId, data) => superAdminApi.put(`/superadmin/accounts/${storeId}/extend`, data),
+  revokeAccount: (storeId, action) => superAdminApi.put(`/superadmin/accounts/${storeId}/revoke`, { action }),
+  cancelSubscription: (storeId) => superAdminApi.put(`/superadmin/accounts/${storeId}/cancel-subscription`),
+};
