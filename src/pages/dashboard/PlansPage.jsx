@@ -4,6 +4,8 @@ import { storeAPI } from '../../api/api';
 import { Check, Clock, Shield, RefreshCw, X, Phone, Mail, MessageCircle } from 'lucide-react';
 import './PlansPage.css';
 
+const email=process.env.email;
+const phone=process.env.phone;
 const PLANS = [
   {
     id: 'free',
@@ -229,28 +231,28 @@ export default function PlansPage() {
             </p>
 
             <div className="plans-contact-options">
-              <a href="tel:+919999999999" className="plans-contact-card">
+              <a href={`tel:${phone}`} className="plans-contact-card">
                 <div className="plans-contact-icon plans-contact-icon-phone">
                   <Phone size={20} />
                 </div>
                 <div>
                   <div className="plans-contact-label">Call Us</div>
-                  <div className="plans-contact-value">+91 99999 99999</div>
+                  <div className="plans-contact-value">+</div>
                 </div>
               </a>
 
-              <a href="mailto:support@avenirya.com" className="plans-contact-card">
+              <a href={`mailto:${email}`} className="plans-contact-card">
                 <div className="plans-contact-icon plans-contact-icon-email">
                   <Mail size={20} />
                 </div>
                 <div>
                   <div className="plans-contact-label">Email Us</div>
-                  <div className="plans-contact-value">support@avenirya.com</div>
+                  <div className="plans-contact-value">{email}</div>
                 </div>
               </a>
 
               <a
-                href="https://wa.me/919999999999"
+                href={`https://wa.me/${phone}`}
                 target="_blank"
                 rel="noreferrer"
                 className="plans-contact-card"
