@@ -75,9 +75,6 @@ export default function PlansPage() {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  
-const email=process.env.email;
-const phone=process.env.phone;
 
   const fetchSubscription = async () => {
     setFetchLoading(true);
@@ -232,28 +229,28 @@ const phone=process.env.phone;
             </p>
 
             <div className="plans-contact-options">
-              <a href={`tel:${phone}`} className="plans-contact-card">
+              <a href={`tel:${import.meta.env.VITE_SUPPORT_PHONE}`} className="plans-contact-card">
                 <div className="plans-contact-icon plans-contact-icon-phone">
                   <Phone size={20} />
                 </div>
                 <div>
                   <div className="plans-contact-label">Call Us</div>
-                  <div className="plans-contact-value">+</div>
+                  <div className="plans-contact-value">{import.meta.env.VITE_SUPPORT_PHONE}</div>
                 </div>
               </a>
 
-              <a href={`mailto:${email}`} className="plans-contact-card">
+              <a href={`mailto:${import.meta.env.VITE_SUPPORT_EMAIL}`} className="plans-contact-card">
                 <div className="plans-contact-icon plans-contact-icon-email">
                   <Mail size={20} />
                 </div>
                 <div>
                   <div className="plans-contact-label">Email Us</div>
-                  <div className="plans-contact-value">{email}</div>
+                  <div className="plans-contact-value">{import.meta.env.VITE_SUPPORT_EMAIL}</div>
                 </div>
               </a>
 
               <a
-                href={`https://wa.me/${phone}`}
+                href={`https://wa.me/${import.meta.env.VITE_SUPPORT_WHATSAPP}`}
                 target="_blank"
                 rel="noreferrer"
                 className="plans-contact-card"
