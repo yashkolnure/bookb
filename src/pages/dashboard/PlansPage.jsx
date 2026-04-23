@@ -24,7 +24,6 @@ const PLANS = [
     name: 'Quarterly',
     price: '₹1,999',
     period: '/ 3 months',
-    tag: 'GREAT VALUE',
     features: [
       'Unlimited Bookings',
       'SMS + Email Reminders',
@@ -40,7 +39,6 @@ const PLANS = [
     name: 'Half Yearly',
     price: '₹3,499',
     period: '/ 6 months',
-    tag: 'MOST POPULAR',
     features: [
       'Everything in Quarterly',
       'Multi-staff Accounts',
@@ -56,7 +54,6 @@ const PLANS = [
     name: 'Yearly',
     price: '₹5,999',
     period: '/ 1 year',
-    tag: 'BEST DEAL',
     features: [
       'Everything in Half Yearly',
       'White-label Domain',
