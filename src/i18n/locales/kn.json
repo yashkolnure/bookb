@@ -1,0 +1,83 @@
+{
+  "common": {
+    "save": "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ", "cancel": "ರದ್ದುಮಾಡಿ", "delete": "ಅಳಿಸಿ",
+    "edit": "ಸಂಪಾದಿಸಿ", "add": "ಸೇರಿಸಿ", "back": "ಹಿಂದೆ",
+    "close": "ಮುಚ್ಚಿ", "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...", "goHome": "ಮುಖಪುಟಕ್ಕೆ ಹೋಗಿ",
+    "confirm": "ದೃಢೀಕರಿಸಿ", "name": "ಹೆಸರು", "email": "ಇಮೇಲ್", "phone": "ಫೋನ್",
+    "notes": "ಟಿಪ್ಪಣಿಗಳು", "total": "ಒಟ್ಟು", "discount": "ರಿಯಾಯಿತಿ", "price": "ಬೆಲೆ",
+    "duration": "ಅವಧಿ", "active": "ಸಕ್ರಿಯ", "inactive": "ನಿಷ್ಕ್ರಿಯ",
+    "today": "ಇಂದು", "closed": "ಮುಚ್ಚಲಾಗಿದೆ", "minutes": "ನಿಮಿಷಗಳು", "min": "ನಿ",
+    "booked": "ಬುಕ್ ಆಗಿದೆ", "clearFilters": "ಫಿಲ್ಟರ್ ತೆರವುಗೊಳಿಸಿ", "sortBy": "ವಿಂಗಡಿಸಿ"
+  },
+  "nav": {
+    "overview": "ಸಾರಾಂಶ", "appointments": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌ಗಳು", "myCalendar": "ನನ್ನ ಕ್ಯಾಲೆಂಡರ್",
+    "services": "ಸೇವೆಗಳು", "coupons": "ಕೂಪನ್‌ಗಳು", "reviews": "ವಿಮರ್ಶೆಗಳು",
+    "storeSettings": "ಸ್ಟೋರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು", "plans": "ಯೋಜನೆಗಳು", "viewStore": "ಸ್ಟೋರ್ ನೋಡಿ"
+  },
+  "store": {
+    "loading": "ಸ್ಟೋರ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ…", "notFound": "ಸ್ಟೋರ್ ಕಂಡುಬಂದಿಲ್ಲ",
+    "notFoundDesc": "ಈ ಸ್ಟೋರ್ ಇಲ್ಲದಿರಬಹುದು ಅಥವಾ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿರಬಹುದು.",
+    "servicesTab": "ಸೇವೆಗಳು", "reviewsTab": "ವಿಮರ್ಶೆಗಳು", "hoursTab": "ಸಮಯ",
+    "searchPlaceholder": "ಸೇವೆಗಳನ್ನು ಹುಡುಕಿ…", "noServicesFound": "ಯಾವುದೇ ಸೇವೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+    "noServicesDesc": "ಈ ಸ್ಟೋರ್ ಇನ್ನೂ ಯಾವುದೇ ಸೇವೆಗಳನ್ನು ಸೇರಿಸಿಲ್ಲ.",
+    "trySearch": "ಬೇರೆ ಪದಗಳಿಂದ ಹುಡುಕಿ.", "noReviews": "ಇನ್ನೂ ವಿಮರ್ಶೆಗಳಿಲ್ಲ",
+    "noReviewsDesc": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌ಗಳು ಮುಗಿದ ನಂತರ ವಿಮರ್ಶೆಗಳು ಬರುತ್ತವೆ.",
+    "businessHours": "ವ್ಯಾಪಾರ ಸಮಯ", "hoursNotSet": "ವ್ಯಾಪಾರ ಸಮಯ ಇನ್ನೂ ಹೊಂದಿಸಲಾಗಿಲ್ಲ.",
+    "book": "ಬುಕ್ ಮಾಡಿ", "bookNow": "ಈಗಲೇ ಬುಕ್ ಮಾಡಿ",
+    "services": "ಸೇವೆಗಳು", "reviews": "ವಿಮರ್ಶೆಗಳು",
+    "clearFilters": "ಫಿಲ್ಟರ್ ತೆರವುಗೊಳಿಸಿ", "view": "ನೋಡಿ", "sale": "ಸೇಲ್", "today": "ಇಂದು"
+  },
+  "booking": {
+    "bookAppointment": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕ್ ಮಾಡಿ", "loadingService": "ಸೇವೆ ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "serviceNotFound": "ಸೇವೆ ಕಂಡುಬಂದಿಲ್ಲ.",
+    "step1": "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ", "step2": "ನಿಮ್ಮ ವಿವರಗಳು", "step3": "ಪರಿಶೀಲನೆ ಮತ್ತು ಪಾವತಿ",
+    "chooseDatetime": "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ ಆಯ್ಕೆಮಾಡಿ",
+    "availableSlots": "{{date}} ಗಾಗಿ ಲಭ್ಯ ಸ್ಲಾಟ್‌ಗಳು",
+    "loadingSlots": "ಸ್ಲಾಟ್‌ಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ...", "noSlots": "ಈ ದಿನಾಂಕದಲ್ಲಿ ಯಾವುದೇ ಸ್ಲಾಟ್‌ಗಳಿಲ್ಲ.",
+    "serviceOptions": "ಸೇವಾ ಆಯ್ಕೆಗಳು", "yourDetails": "ನಿಮ್ಮ ವಿವರಗಳು",
+    "noAccountRequired": "ಖಾತೆ ಅಗತ್ಯವಿಲ್ಲ — ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.",
+    "fullName": "ಪೂರ್ಣ ಹೆಸರು", "phoneNumber": "ಫೋನ್ ಸಂಖ್ಯೆ",
+    "emailAddress": "ಇಮೇಲ್ ವಿಳಾಸ", "notesOptional": "ಟಿಪ್ಪಣಿಗಳು (ಐಚ್ಛಿಕ)",
+    "notesPlaceholder": "ಯಾವುದೇ ವಿಶೇಷ ವಿನಂತಿಗಳು...",
+    "haveCoupon": "ಕೂಪನ್ ಇದೆಯೇ?", "enterCoupon": "ಕೂಪನ್ ಕೋಡ್ ನಮೂದಿಸಿ",
+    "apply": "ಅನ್ವಯಿಸಿ", "couponApplied": "ಕೂಪನ್ ಅನ್ವಯಿಸಲಾಗಿದೆ! ₹{{amount}} ಉಳಿತಾಯ",
+    "invalidCoupon": "ಅಮಾನ್ಯ ಕೂಪನ್", "reviewConfirm": "ಪರಿಶೀಲನೆ ಮತ್ತು ದೃಢೀಕರಣ",
+    "time": "ಸಮಯ", "name": "ಹೆಸರು", "servicePrice": "ಸೇವಾ ಬೆಲೆ",
+    "confirmBooking": "ಬುಕಿಂಗ್ ದೃಢೀಕರಿಸಿ →",
+    "bookingConfirmed": "ಬುಕಿಂಗ್ ದೃಢೀಕರಿಸಲಾಗಿದೆ!",
+    "confirmationDesc": "ನಿಮ್ಮ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಯಶಸ್ವಿಯಾಗಿ ಬುಕ್ ಆಗಿದೆ. ದೃಢೀಕರಣ ಇಮೇಲ್ ಕಳುಹಿಸಲಾಗಿದೆ",
+    "appointmentId": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ID", "service": "ಸೇವೆ",
+    "totalPaid": "ಒಟ್ಟು ಪಾವತಿ", "manageAppointment": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ನಿರ್ವಹಿಸಿ",
+    "backToStore": "ಸ್ಟೋರ್‌ಗೆ ಹಿಂದಿರುಗಿ", "selected": "ಆಯ್ಕೆಯಾಗಿದೆ",
+    "selectLabel": "{{option}} ಆಯ್ಕೆಮಾಡಿ", "continue": "ಮುಂದುವರಿಸಿ",
+    "reviewBooking": "ಬುಕಿಂಗ್ ಪರಿಶೀಲಿಸಿ", "fillRequired": "ಎಲ್ಲಾ ಅಗತ್ಯ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    "bookingFailed": "ಬುಕಿಂಗ್ ವಿಫಲವಾಗಿದೆ", "duration": "ಅವಧಿ",
+    "durationMinutes": "{{count}} ನಿಮಿಷಗಳು", "selectDuration": "ಅಧಿವೇಶನ ಅವಧಿ ಆಯ್ಕೆಮಾಡಿ",
+    "pricePreview": "ಬೆಲೆ: ₹{{amount}}", "youSave": "ನೀವು ₹{{amount}} ಉಳಿಸುತ್ತೀರಿ"
+  },
+  "manage": {
+    "loading": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "invalidLink": "ಅಮಾನ್ಯ ಅಥವಾ ಅವಧಿ ಮೀರಿದ ಲಿಂಕ್",
+    "invalidDesc": "ಈ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಲಿಂಕ್ ಅಮಾನ್ಯ ಅಥವಾ ಅವಧಿ ಮೀರಿದೆ.",
+    "appointment": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್", "appointmentDetails": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ವಿವರಗಳು",
+    "dateTime": "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ", "duration": "ಅವಧಿ", "store": "ಸ್ಟೋರ್", "service": "ಸೇವೆ",
+    "paymentSummary": "ಪಾವತಿ ಸಾರಾಂಶ", "servicePrice": "ಸೇವಾ ಬೆಲೆ",
+    "total": "ಒಟ್ಟು", "paymentStatus": "ಪಾವತಿ ಸ್ಥಿತಿ",
+    "cancellationReason": "ರದ್ದತಿ ಕಾರಣ", "cancelAppointment": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ರದ್ದುಮಾಡಿ",
+    "cancelConfirm": "ಈ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ರದ್ದುಮಾಡಲು ಬಯಸುತ್ತೀರಾ?",
+    "cancelSuccess": "ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ರದ್ದಾಗಿದೆ",
+    "leaveReview": "ವಿಮರ್ಶೆ ನೀಡಿ", "reviewDone": "✓ ವಿಮರ್ಶೆ ಸಲ್ಲಿಸಲಾಗಿದೆ. ಧನ್ಯವಾದಗಳು!",
+    "viewStore": "ಸ್ಟೋರ್ ನೋಡಿ", "customerInfo": "ಗ್ರಾಹಕ ಮಾಹಿತಿ",
+    "storeContact": "ಸ್ಟೋರ್ ಸಂಪರ್ಕ", "rating": "ರೇಟಿಂಗ್",
+    "commentOptional": "ಕಾಮೆಂಟ್ (ಐಚ್ಛಿಕ)", "commentPlaceholder": "ನಿಮ್ಮ ಅನುಭವ ಹಂಚಿಕೊಳ್ಳಿ...",
+    "submitReview": "ವಿಮರ್ಶೆ ಸಲ್ಲಿಸಿ", "reviewSubmitted": "ವಿಮರ್ಶೆ ಸಲ್ಲಿಸಲಾಗಿದೆ! ಧನ್ಯವಾದಗಳು.",
+    "selectRating": "ರೇಟಿಂಗ್ ಆಯ್ಕೆಮಾಡಿ", "minutes": "ನಿಮಿಷಗಳು"
+  },
+  "language": {
+    "label": "ಭಾಷೆ",
+    "en": "English", "hi": "हिंदी", "bn": "বাংলা", "te": "తెలుగు",
+    "mr": "मराठी", "ta": "தமிழ்", "gu": "ગુજરાતી", "kn": "ಕನ್ನಡ",
+    "ml": "മലയാളം", "or": "ଓଡ଼ିଆ", "pa": "ਪੰਜਾਬੀ", "ur": "اردو",
+    "as": "অসমীয়া", "ne": "नेपाली"
+  }
+}

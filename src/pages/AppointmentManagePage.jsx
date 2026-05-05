@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { appointmentAPI, reviewAPI } from '../api/api';
+import { useTranslation } from 'react-i18next';
 import { Clock, Calendar, Store, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './AppointmentManagePage.css';
@@ -9,6 +10,7 @@ export default function AppointmentManagePage() {
   const { id } = useParams();
   const [params] = useSearchParams();
   const token = params.get('token');
+  const { t } = useTranslation();
   const [appt, setAppt] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cancelling, setCancelling] = useState(false);
@@ -26,47 +28,47 @@ export default function AppointmentManagePage() {
   }, [id, token]);
 
   const handleCancel = async () => {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return;
+    if (!confirm(t('manage.cancelConfirm'))) return;
     setCancelling(true);
     try {
       const res = await appointmentAPI.cancel(id, token, 'Cancelled by customer');
       setAppt(res.data.appointment);
-      toast.success('Appointment cancelled');
+      toast.success(t('manage.cancelSuccess'));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Could not cancel');
-    } finally {
-      setCancelling(false);
-    }
+    } finally { setCancelling(false); }
   };
 
   const handleReview = async () => {
-    if (!review.rating) { toast.error('Please select a rating'); return; }
+    if (!review.rating) { toast.error(t('manage.selectRating')); return; }
     setSubmittingReview(true);
     try {
       await reviewAPI.submit({ appointmentId: id, token, ...review });
       setReviewDone(true);
       setShowReview(false);
-      toast.success('Review submitted! Thank you.');
+      toast.success(t('manage.reviewSubmitted'));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Could not submit review');
-    } finally {
-      setSubmittingReview(false);
-    }
+    } finally { setSubmittingReview(false); }
   };
 
-  if (loading) return <div className="page-loading"><div className="spinner" style={{width:36,height:36,borderWidth:3}}/><p>Loading appointment...</p></div>;
+  if (loading) return (
+    <div className="page-loading">
+      <div className="spinner" style={{width:36,height:36,borderWidth:3}}/><p>{t('manage.loading')}</p>
+    </div>
+  );
   if (!token || !appt) return (
     <div className="page-loading">
       <div style={{textAlign:'center'}}>
         <div style={{fontSize:48,marginBottom:16}}>🔒</div>
-        <h3>Invalid or expired link</h3>
-        <p style={{color:'var(--ink-muted)',marginTop:8}}>This appointment link is invalid or has expired.</p>
-        <Link to="/" className="btn btn-primary" style={{marginTop:16}}>Go Home</Link>
+        <h3>{t('manage.invalidLink')}</h3>
+        <p style={{color:'var(--ink-muted)',marginTop:8}}>{t('manage.invalidDesc')}</p>
+        <Link to="/" className="btn btn-primary" style={{marginTop:16}}>{t('common.goHome')}</Link>
       </div>
     </div>
   );
 
-  const dateStr = new Date(appt.appointmentDate).toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const dateStr = new Date(appt.appointmentDate).toLocaleDateString(undefined, { weekday:'long', day:'numeric', month:'long', year:'numeric' });
   const canCancel = ['pending','confirmed'].includes(appt.status);
   const canReview = appt.status === 'completed' && !reviewDone;
 
@@ -74,7 +76,7 @@ export default function AppointmentManagePage() {
     <div className="manage-page">
       <div className="manage-nav">
         <div className="container">
-          <span className="manage-logo">BookEase</span>
+          <span className="manage-logo">BookKromess</span>
         </div>
       </div>
 
@@ -82,33 +84,33 @@ export default function AppointmentManagePage() {
         <div className="manage-main animate-fadeUp">
           <div className="manage-header">
             <div>
-              <div className="section-eyebrow">Appointment</div>
+              <div className="section-eyebrow">{t('manage.appointment')}</div>
               <h1>#{appt.appointmentId}</h1>
             </div>
             <div className={`badge badge-${appt.status}`}>{appt.status}</div>
           </div>
 
           <div className="manage-card card">
-            <h3>Appointment Details</h3>
+            <h3>{t('manage.appointmentDetails')}</h3>
             <div className="manage-details">
               <div className="detail-row">
                 <Calendar size={16} className="detail-icon"/>
                 <div>
-                  <div className="detail-label">Date & Time</div>
+                  <div className="detail-label">{t('manage.dateTime')}</div>
                   <div className="detail-val">{dateStr} at {appt.startTime}</div>
                 </div>
               </div>
               <div className="detail-row">
                 <Clock size={16} className="detail-icon"/>
                 <div>
-                  <div className="detail-label">Duration</div>
-                  <div className="detail-val">{appt.service?.duration} minutes</div>
+                  <div className="detail-label">{t('manage.duration')}</div>
+                  <div className="detail-val">{appt.service?.duration} {t('manage.minutes')}</div>
                 </div>
               </div>
               <div className="detail-row">
                 <Store size={16} className="detail-icon"/>
                 <div>
-                  <div className="detail-label">Store</div>
+                  <div className="detail-label">{t('manage.store')}</div>
                   <div className="detail-val">{appt.store?.name}</div>
                 </div>
               </div>
@@ -116,7 +118,7 @@ export default function AppointmentManagePage() {
           </div>
 
           <div className="manage-card card">
-            <h3>Service</h3>
+            <h3>{t('manage.service')}</h3>
             <div className="svc-info">
               <div className="svc-name">{appt.service?.name}</div>
               {appt.selectedOptions?.length > 0 && (
@@ -128,20 +130,26 @@ export default function AppointmentManagePage() {
           </div>
 
           <div className="manage-card card">
-            <h3>Payment Summary</h3>
+            <h3>{t('manage.paymentSummary')}</h3>
             <div className="payment-rows">
-              <div className="p-row"><span>Service Price</span><span>₹{appt.originalPrice}</span></div>
+              <div className="p-row"><span>{t('manage.servicePrice')}</span><span>₹{appt.originalPrice}</span></div>
               {appt.discountAmount > 0 && (
-                <div className="p-row discount"><span>Discount {appt.couponCode ? `(${appt.couponCode})` : ''}</span><span>−₹{appt.discountAmount}</span></div>
+                <div className="p-row discount">
+                  <span>{t('common.discount')} {appt.couponCode ? `(${appt.couponCode})` : ''}</span>
+                  <span>−₹{appt.discountAmount}</span>
+                </div>
               )}
-              <div className="p-row total"><span>Total</span><span>₹{appt.totalAmount}</span></div>
-              <div className="p-row"><span>Payment Status</span><span className={`badge badge-${appt.payment?.status === 'paid' ? 'paid' : 'pending'}`}>{appt.payment?.status || 'pending'}</span></div>
+              <div className="p-row total"><span>{t('manage.total')}</span><span>₹{appt.totalAmount}</span></div>
+              <div className="p-row">
+                <span>{t('manage.paymentStatus')}</span>
+                <span className={`badge badge-${appt.payment?.status === 'paid' ? 'paid' : 'pending'}`}>{appt.payment?.status || 'pending'}</span>
+              </div>
             </div>
           </div>
 
           {appt.cancellationReason && (
             <div className="manage-card card" style={{borderColor:'var(--error)',background:'#fce4ec20'}}>
-              <h3 style={{color:'var(--error)'}}>Cancellation Reason</h3>
+              <h3 style={{color:'var(--error)'}}>{t('manage.cancellationReason')}</h3>
               <p style={{marginTop:8,fontSize:14,color:'var(--ink-muted)'}}>{appt.cancellationReason}</p>
             </div>
           )}
@@ -149,53 +157,52 @@ export default function AppointmentManagePage() {
           <div className="manage-actions">
             {canCancel && (
               <button className="btn btn-danger" onClick={handleCancel} disabled={cancelling}>
-                {cancelling ? <span className="spinner" style={{borderTopColor:'#fff'}}/> : 'Cancel Appointment'}
+                {cancelling ? <span className="spinner" style={{borderTopColor:'#fff'}}/> : t('manage.cancelAppointment')}
               </button>
             )}
             {canReview && (
               <button className="btn btn-gold" onClick={() => setShowReview(true)}>
-                <Star size={15}/> Leave a Review
+                <Star size={15}/> {t('manage.leaveReview')}
               </button>
             )}
-            {reviewDone && <div className="review-done-msg">✓ Review submitted. Thank you!</div>}
+            {reviewDone && <div className="review-done-msg">{t('manage.reviewDone')}</div>}
             {appt.store?.slug && (
-              <Link to={`/store/${appt.store.slug}`} className="btn btn-outline">View Store</Link>
+              <Link to={`/store/${appt.store.slug}`} className="btn btn-outline">{t('manage.viewStore')}</Link>
             )}
           </div>
         </div>
 
         <div className="manage-sidebar">
           <div className="card">
-            <h3>Customer Info</h3>
+            <h3>{t('manage.customerInfo')}</h3>
             <div className="cust-info">
-              <div className="cust-row"><span>Name</span><span>{appt.customer?.name}</span></div>
-              <div className="cust-row"><span>Email</span><span>{appt.customer?.email}</span></div>
-              <div className="cust-row"><span>Phone</span><span>{appt.customer?.phone}</span></div>
-              {appt.customer?.notes && <div className="cust-row"><span>Notes</span><span>{appt.customer.notes}</span></div>}
+              <div className="cust-row"><span>{t('common.name')}</span><span>{appt.customer?.name}</span></div>
+              <div className="cust-row"><span>{t('common.email')}</span><span>{appt.customer?.email}</span></div>
+              <div className="cust-row"><span>{t('common.phone')}</span><span>{appt.customer?.phone}</span></div>
+              {appt.customer?.notes && <div className="cust-row"><span>{t('common.notes')}</span><span>{appt.customer.notes}</span></div>}
             </div>
           </div>
           {appt.store && (
             <div className="card" style={{marginTop:16}}>
-              <h3>Store Contact</h3>
+              <h3>{t('manage.storeContact')}</h3>
               <div className="cust-info">
-                {appt.store.phone && <div className="cust-row"><span>Phone</span><span>{appt.store.phone}</span></div>}
-                {appt.store.email && <div className="cust-row"><span>Email</span><span>{appt.store.email}</span></div>}
+                {appt.store.phone && <div className="cust-row"><span>{t('common.phone')}</span><span>{appt.store.phone}</span></div>}
+                {appt.store.email && <div className="cust-row"><span>{t('common.email')}</span><span>{appt.store.email}</span></div>}
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Review Modal */}
       {showReview && (
         <div className="modal-overlay" onClick={e => e.target===e.currentTarget && setShowReview(false)}>
           <div className="modal">
             <div className="modal-header">
-              <h2 className="modal-title">Leave a Review</h2>
+              <h2 className="modal-title">{t('manage.leaveReview')}</h2>
               <button className="modal-close" onClick={() => setShowReview(false)}>×</button>
             </div>
             <div className="form-group">
-              <label className="form-label">Rating</label>
+              <label className="form-label">{t('manage.rating')}</label>
               <div className="star-picker">
                 {[1,2,3,4,5].map(n => (
                   <button key={n} className={`star-pick ${review.rating >= n ? 'active' : ''}`}
@@ -206,14 +213,14 @@ export default function AppointmentManagePage() {
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label">Comment (optional)</label>
-              <textarea className="form-input" rows={4} placeholder="Share your experience..."
+              <label className="form-label">{t('manage.commentOptional')}</label>
+              <textarea className="form-input" rows={4} placeholder={t('manage.commentPlaceholder')}
                 value={review.comment} onChange={e => setReview(p=>({...p,comment:e.target.value}))} />
             </div>
             <div style={{display:'flex',gap:12,justifyContent:'flex-end'}}>
-              <button className="btn btn-outline" onClick={() => setShowReview(false)}>Cancel</button>
+              <button className="btn btn-outline" onClick={() => setShowReview(false)}>{t('common.cancel')}</button>
               <button className="btn btn-gold" onClick={handleReview} disabled={submittingReview}>
-                {submittingReview ? <span className="spinner" style={{borderTopColor:'#fff'}}/> : 'Submit Review'}
+                {submittingReview ? <span className="spinner" style={{borderTopColor:'#fff'}}/> : t('manage.submitReview')}
               </button>
             </div>
           </div>

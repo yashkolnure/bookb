@@ -1,0 +1,83 @@
+{
+  "common": {
+    "save": "পৰিৱৰ্তন সংৰক্ষণ কৰক", "cancel": "বাতিল", "delete": "মচক",
+    "edit": "সম্পাদনা কৰক", "add": "যোগ কৰক", "back": "উভতি যাওক",
+    "close": "বন্ধ কৰক", "loading": "লোড হৈছে...", "goHome": "হোমলৈ যাওক",
+    "confirm": "নিশ্চিত কৰক", "name": "নাম", "email": "ইমেইল", "phone": "ফোন",
+    "notes": "টোকা", "total": "মুঠ", "discount": "ৰেহাই", "price": "মূল্য",
+    "duration": "সময়কাল", "active": "সক্ৰিয়", "inactive": "নিষ্ক্ৰিয়",
+    "today": "আজি", "closed": "বন্ধ", "minutes": "মিনিট", "min": "মি",
+    "booked": "বুক", "clearFilters": "ফিল্টাৰ পৰিষ্কাৰ কৰক", "sortBy": "সজাওক"
+  },
+  "nav": {
+    "overview": "সাৰাংশ", "appointments": "এপইণ্টমেণ্ট", "myCalendar": "মোৰ কেলেণ্ডাৰ",
+    "services": "সেৱাসমূহ", "coupons": "কুপন", "reviews": "পৰ্যালোচনা",
+    "storeSettings": "ষ্টোৰ ছেটিংছ", "plans": "পৰিকল্পনা", "viewStore": "ষ্টোৰ চাওক"
+  },
+  "store": {
+    "loading": "ষ্টোৰ লোড হৈছে…", "notFound": "ষ্টোৰ পোৱা নগ'ল",
+    "notFoundDesc": "এই ষ্টোৰটো নাথাকিব পাৰে বা নিষ্ক্ৰিয় কৰা হৈছে।",
+    "servicesTab": "সেৱাসমূহ", "reviewsTab": "পৰ্যালোচনা", "hoursTab": "সময়",
+    "searchPlaceholder": "সেৱা বিচাৰক…", "noServicesFound": "কোনো সেৱা পোৱা নগ'ল",
+    "noServicesDesc": "এই ষ্টোৰে এতিয়াও কোনো সেৱা যোগ কৰা নাই।",
+    "trySearch": "বেলেগ শব্দেৰে বিচাৰক।", "noReviews": "এতিয়ালৈকে কোনো পৰ্যালোচনা নাই",
+    "noReviewsDesc": "এপইণ্টমেণ্ট সম্পূৰ্ণ হোৱাৰ পিছত পৰ্যালোচনা আহিব।",
+    "businessHours": "ব্যৱসায়িক সময়", "hoursNotSet": "ব্যৱসায়িক সময় এতিয়ালৈকে ছেট কৰা হোৱা নাই।",
+    "book": "বুক কৰক", "bookNow": "এতিয়াই বুক কৰক",
+    "services": "সেৱাসমূহ", "reviews": "পৰ্যালোচনা",
+    "clearFilters": "ফিল্টাৰ পৰিষ্কাৰ কৰক", "view": "চাওক", "sale": "ছেল", "today": "আজি"
+  },
+  "booking": {
+    "bookAppointment": "এপইণ্টমেণ্ট বুক কৰক", "loadingService": "সেৱা লোড হৈছে...",
+    "serviceNotFound": "সেৱা পোৱা নগ'ল।",
+    "step1": "তাৰিখ আৰু সময়", "step2": "আপোনাৰ বিৱৰণ", "step3": "পৰ্যালোচনা আৰু পৰিশোধ",
+    "chooseDatetime": "তাৰিখ আৰু সময় বাছক",
+    "availableSlots": "{{date}}ৰ বাবে উপলব্ধ স্লট",
+    "loadingSlots": "স্লট লোড হৈছে...", "noSlots": "এই তাৰিখৰ বাবে কোনো স্লট নাই।",
+    "serviceOptions": "সেৱাৰ বিকল্প", "yourDetails": "আপোনাৰ বিৱৰণ",
+    "noAccountRequired": "একাউণ্টৰ প্ৰয়োজন নাই — কেৱল আপোনাৰ বিৱৰণ পূৰণ কৰক।",
+    "fullName": "সম্পূৰ্ণ নাম", "phoneNumber": "ফোন নম্বৰ",
+    "emailAddress": "ইমেইল ঠিকনা", "notesOptional": "টোকা (ঐচ্ছিক)",
+    "notesPlaceholder": "যিকোনো বিশেষ অনুৰোধ...",
+    "haveCoupon": "কুপন আছেনে?", "enterCoupon": "কুপন ক'ড দিয়ক",
+    "apply": "প্ৰয়োগ কৰক", "couponApplied": "কুপন প্ৰয়োগ হ'ল! ₹{{amount}} সাশ্ৰয়",
+    "invalidCoupon": "অবৈধ কুপন", "reviewConfirm": "পৰ্যালোচনা আৰু নিশ্চিতকৰণ",
+    "time": "সময়", "name": "নাম", "servicePrice": "সেৱাৰ মূল্য",
+    "confirmBooking": "বুকিং নিশ্চিত কৰক →",
+    "bookingConfirmed": "বুকিং নিশ্চিত হ'ল!",
+    "confirmationDesc": "আপোনাৰ এপইণ্টমেণ্ট সফলতাৰে বুক হ'ল। নিশ্চিতকৰণ ইমেইল পঠোৱা হ'ল",
+    "appointmentId": "এপইণ্টমেণ্ট ID", "service": "সেৱা",
+    "totalPaid": "মুঠ পৰিশোধ", "manageAppointment": "এপইণ্টমেণ্ট পৰিচালনা কৰক",
+    "backToStore": "ষ্টোৰলৈ উভতি যাওক", "selected": "বাছনি কৰা হৈছে",
+    "selectLabel": "{{option}} বাছক", "continue": "অব্যাহত ৰাখক",
+    "reviewBooking": "বুকিং পৰ্যালোচনা কৰক", "fillRequired": "সকলো প্ৰয়োজনীয় বিৱৰণ পূৰণ কৰক",
+    "bookingFailed": "বুকিং বিফল হ'ল", "duration": "সময়কাল",
+    "durationMinutes": "{{count}} মিনিট", "selectDuration": "ছেছনৰ সময়কাল বাছক",
+    "pricePreview": "মূল্য: ₹{{amount}}", "youSave": "আপুনি ₹{{amount}} সাশ্ৰয় কৰিছে"
+  },
+  "manage": {
+    "loading": "এপইণ্টমেণ্ট লোড হৈছে...",
+    "invalidLink": "অবৈধ বা মিয়াদ শেষ লিংক",
+    "invalidDesc": "এই এপইণ্টমেণ্ট লিংকটো অবৈধ বা মিয়াদ শেষ হৈছে।",
+    "appointment": "এপইণ্টমেণ্ট", "appointmentDetails": "এপইণ্টমেণ্ট বিৱৰণ",
+    "dateTime": "তাৰিখ আৰু সময়", "duration": "সময়কাল", "store": "ষ্টোৰ", "service": "সেৱা",
+    "paymentSummary": "পৰিশোধ সাৰাংশ", "servicePrice": "সেৱাৰ মূল্য",
+    "total": "মুঠ", "paymentStatus": "পৰিশোধৰ অৱস্থা",
+    "cancellationReason": "বাতিলৰ কাৰণ", "cancelAppointment": "এপইণ্টমেণ্ট বাতিল কৰক",
+    "cancelConfirm": "আপুনি এই এপইণ্টমেণ্টটো বাতিল কৰিব বিচাৰিছেনে?",
+    "cancelSuccess": "এপইণ্টমেণ্ট বাতিল হ'ল",
+    "leaveReview": "পৰ্যালোচনা দিয়ক", "reviewDone": "✓ পৰ্যালোচনা দাখিল হ'ল। ধন্যবাদ!",
+    "viewStore": "ষ্টোৰ চাওক", "customerInfo": "গ্ৰাহকৰ তথ্য",
+    "storeContact": "ষ্টোৰ যোগাযোগ", "rating": "ৰেটিং",
+    "commentOptional": "মন্তব্য (ঐচ্ছিক)", "commentPlaceholder": "আপোনাৰ অভিজ্ঞতা ভাগ কৰক...",
+    "submitReview": "পৰ্যালোচনা দাখিল কৰক", "reviewSubmitted": "পৰ্যালোচনা দাখিল হ'ল! ধন্যবাদ।",
+    "selectRating": "ৰেটিং বাছক", "minutes": "মিনিট"
+  },
+  "language": {
+    "label": "ভাষা",
+    "en": "English", "hi": "हिंदी", "bn": "বাংলা", "te": "తెలుగు",
+    "mr": "मराठी", "ta": "தமிழ்", "gu": "ગુજરાતી", "kn": "ಕನ್ನಡ",
+    "ml": "മലയാളം", "or": "ଓଡ଼ିଆ", "pa": "ਪੰਜਾਬੀ", "ur": "اردو",
+    "as": "অসমীয়া", "ne": "नेपाली"
+  }
+}

@@ -89,6 +89,15 @@ export const reviewAPI = {
   deleteReview: (id) => api.delete(`/reviews/${id}`),
 };
 
+// ── Calendar Sync ──
+export const calendarAPI = {
+  getConnections: () => api.get('/calendar/connections'),
+  getAuthUrl:     (provider) => api.get(`/calendar/auth/${provider}`),
+  connectApple:   (data) => api.post('/calendar/apple/connect', data),
+  disconnect:     (id) => api.delete(`/calendar/connections/${id}`),
+  setDefault:     (id) => api.patch(`/calendar/connections/${id}/setDefault`),
+};
+
 export default api;
 
 // ── Super Admin API ──

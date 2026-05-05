@@ -1,0 +1,83 @@
+{
+  "common": {
+    "save": "تبدیلیاں محفوظ کریں", "cancel": "منسوخ", "delete": "حذف کریں",
+    "edit": "ترمیم کریں", "add": "شامل کریں", "back": "واپس",
+    "close": "بند کریں", "loading": "لوڈ ہو رہا ہے...", "goHome": "ہوم پر جائیں",
+    "confirm": "تصدیق کریں", "name": "نام", "email": "ای میل", "phone": "فون",
+    "notes": "نوٹس", "total": "کل", "discount": "رعایت", "price": "قیمت",
+    "duration": "مدت", "active": "فعال", "inactive": "غیر فعال",
+    "today": "آج", "closed": "بند", "minutes": "منٹ", "min": "من",
+    "booked": "بک", "clearFilters": "فلٹر صاف کریں", "sortBy": "ترتیب دیں"
+  },
+  "nav": {
+    "overview": "جائزہ", "appointments": "اپائنٹمنٹ", "myCalendar": "میرا کیلنڈر",
+    "services": "خدمات", "coupons": "کوپن", "reviews": "جائزے",
+    "storeSettings": "اسٹور ترتیبات", "plans": "منصوبے", "viewStore": "اسٹور دیکھیں"
+  },
+  "store": {
+    "loading": "اسٹور لوڈ ہو رہا ہے…", "notFound": "اسٹور نہیں ملا",
+    "notFoundDesc": "یہ اسٹور موجود نہیں ہو سکتا یا غیر فعال کیا گیا ہو سکتا ہے۔",
+    "servicesTab": "خدمات", "reviewsTab": "جائزے", "hoursTab": "اوقات",
+    "searchPlaceholder": "خدمات تلاش کریں…", "noServicesFound": "کوئی خدمت نہیں ملی",
+    "noServicesDesc": "اس اسٹور نے ابھی تک کوئی خدمت شامل نہیں کی۔",
+    "trySearch": "مختلف الفاظ سے تلاش کریں۔", "noReviews": "ابھی تک کوئی جائزہ نہیں",
+    "noReviewsDesc": "اپائنٹمنٹ مکمل ہونے کے بعد جائزے آئیں گے۔",
+    "businessHours": "کاروباری اوقات", "hoursNotSet": "کاروباری اوقات ابھی تک مقرر نہیں ہیں۔",
+    "book": "بک کریں", "bookNow": "ابھی بک کریں",
+    "services": "خدمات", "reviews": "جائزے",
+    "clearFilters": "فلٹر صاف کریں", "view": "دیکھیں", "sale": "سیل", "today": "آج"
+  },
+  "booking": {
+    "bookAppointment": "اپائنٹمنٹ بک کریں", "loadingService": "خدمت لوڈ ہو رہی ہے...",
+    "serviceNotFound": "خدمت نہیں ملی۔",
+    "step1": "تاریخ اور وقت", "step2": "آپ کی تفصیلات", "step3": "جائزہ اور ادائیگی",
+    "chooseDatetime": "تاریخ اور وقت منتخب کریں",
+    "availableSlots": "{{date}} کے لیے دستیاب سلاٹ",
+    "loadingSlots": "سلاٹ لوڈ ہو رہے ہیں...", "noSlots": "اس تاریخ کے لیے کوئی سلاٹ نہیں۔",
+    "serviceOptions": "خدمت کے اختیارات", "yourDetails": "آپ کی تفصیلات",
+    "noAccountRequired": "اکاؤنٹ کی ضرورت نہیں — بس اپنی تفصیلات بھریں۔",
+    "fullName": "پورا نام", "phoneNumber": "فون نمبر",
+    "emailAddress": "ای میل پتہ", "notesOptional": "نوٹس (اختیاری)",
+    "notesPlaceholder": "کوئی خاص درخواست...",
+    "haveCoupon": "کوپن ہے؟", "enterCoupon": "کوپن کوڈ درج کریں",
+    "apply": "لاگو کریں", "couponApplied": "کوپن لاگو ہوا! ₹{{amount}} بچت",
+    "invalidCoupon": "غلط کوپن", "reviewConfirm": "جائزہ اور تصدیق",
+    "time": "وقت", "name": "نام", "servicePrice": "خدمت کی قیمت",
+    "confirmBooking": "بکنگ کی تصدیق کریں ←",
+    "bookingConfirmed": "بکنگ کی تصدیق ہو گئی!",
+    "confirmationDesc": "آپ کی اپائنٹمنٹ کامیابی سے بک ہوئی۔ تصدیقی ای میل بھیج دی گئی",
+    "appointmentId": "اپائنٹمنٹ ID", "service": "خدمت",
+    "totalPaid": "کل ادائیگی", "manageAppointment": "اپائنٹمنٹ کا انتظام کریں",
+    "backToStore": "اسٹور پر واپس جائیں", "selected": "منتخب",
+    "selectLabel": "{{option}} منتخب کریں", "continue": "جاری رکھیں",
+    "reviewBooking": "بکنگ کا جائزہ لیں", "fillRequired": "تمام ضروری تفصیلات بھریں",
+    "bookingFailed": "بکنگ ناکام", "duration": "مدت",
+    "durationMinutes": "{{count}} منٹ", "selectDuration": "سیشن کی مدت منتخب کریں",
+    "pricePreview": "قیمت: ₹{{amount}}", "youSave": "آپ ₹{{amount}} بچاتے ہیں"
+  },
+  "manage": {
+    "loading": "اپائنٹمنٹ لوڈ ہو رہی ہے...",
+    "invalidLink": "غلط یا میعاد ختم لنک",
+    "invalidDesc": "یہ اپائنٹمنٹ لنک غلط ہے یا میعاد ختم ہو گئی ہے۔",
+    "appointment": "اپائنٹمنٹ", "appointmentDetails": "اپائنٹمنٹ تفصیلات",
+    "dateTime": "تاریخ اور وقت", "duration": "مدت", "store": "اسٹور", "service": "خدمت",
+    "paymentSummary": "ادائیگی خلاصہ", "servicePrice": "خدمت کی قیمت",
+    "total": "کل", "paymentStatus": "ادائیگی کی حیثیت",
+    "cancellationReason": "منسوخی کی وجہ", "cancelAppointment": "اپائنٹمنٹ منسوخ کریں",
+    "cancelConfirm": "کیا آپ یہ اپائنٹمنٹ منسوخ کرنا چاہتے ہیں؟",
+    "cancelSuccess": "اپائنٹمنٹ منسوخ ہو گئی",
+    "leaveReview": "جائزہ دیں", "reviewDone": "✓ جائزہ جمع ہوا۔ شکریہ!",
+    "viewStore": "اسٹور دیکھیں", "customerInfo": "گاہک کی معلومات",
+    "storeContact": "اسٹور رابطہ", "rating": "ریٹنگ",
+    "commentOptional": "تبصرہ (اختیاری)", "commentPlaceholder": "اپنا تجربہ شیئر کریں...",
+    "submitReview": "جائزہ جمع کریں", "reviewSubmitted": "جائزہ جمع ہوا! شکریہ۔",
+    "selectRating": "ریٹنگ منتخب کریں", "minutes": "منٹ"
+  },
+  "language": {
+    "label": "زبان",
+    "en": "English", "hi": "हिंदी", "bn": "বাংলা", "te": "తెలుగు",
+    "mr": "मराठी", "ta": "தமிழ்", "gu": "ગુજરાતી", "kn": "ಕನ್ನಡ",
+    "ml": "മലയാളം", "or": "ଓଡ଼ିଆ", "pa": "ਪੰਜਾਬੀ", "ur": "اردو",
+    "as": "অসমীয়া", "ne": "नेपाली"
+  }
+}

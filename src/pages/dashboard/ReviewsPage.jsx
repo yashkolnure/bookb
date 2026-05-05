@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { reviewAPI } from '../../api/api';
+import { useTranslation } from 'react-i18next';
 import { Star, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import './ServicesPage.css';
@@ -7,7 +8,7 @@ import './ServicesPage.css';
 function Stars({ rating }) {
   return (
     <div style={{ display: 'flex', gap: 3 }}>
-      {[1, 2, 3, 4, 5].map(i => (
+      {[1,2,3,4,5].map(i => (
         <Star key={i} size={14}
           fill={i <= rating ? 'var(--gold)' : 'none'}
           stroke={i <= rating ? 'var(--gold)' : 'var(--border-dark)'}
@@ -18,45 +19,40 @@ function Stars({ rating }) {
 }
 
 export default function ReviewsPage() {
+  const { t } = useTranslation();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
 
   const load = () => {
     setLoading(true);
-    reviewAPI.getProviderReviews()
-      .then(r => setReviews(r.data.reviews))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    reviewAPI.getProviderReviews().then(r => setReviews(r.data.reviews)).catch(()=>{}).finally(()=>setLoading(false));
   };
-
   useEffect(() => { load(); }, []);
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete this review? This cannot be undone.')) return;
+    if (!confirm(t('reviews.deleteConfirm'))) return;
     setDeletingId(id);
     try {
       await reviewAPI.deleteReview(id);
       setReviews(prev => prev.filter(r => r._id !== id));
-      toast.success('Review deleted');
+      toast.success(t('reviews.deleted'));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Could not delete review');
-    } finally {
-      setDeletingId(null);
-    }
+    } finally { setDeletingId(null); }
   };
 
   const avg = reviews.length
     ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : '—';
-  const dist = [5, 4, 3, 2, 1].map(n => ({ n, count: reviews.filter(r => r.rating === n).length }));
+  const dist = [5,4,3,2,1].map(n => ({ n, count: reviews.filter(r => r.rating === n).length }));
 
   return (
     <div>
       <div className="page-header">
         <div>
-          <h1 className="page-title">Reviews</h1>
-          <p className="page-subtitle">Customer feedback for your store and services</p>
+          <h1 className="page-title">{t('reviews.title')}</h1>
+          <p className="page-subtitle">{t('reviews.subtitle')}</p>
         </div>
       </div>
 
@@ -67,12 +63,11 @@ export default function ReviewsPage() {
       ) : reviews.length === 0 ? (
         <div className="empty-state" style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', background: 'var(--warm-white)' }}>
           <div className="empty-state-icon">⭐</div>
-          <h3>No reviews yet</h3>
-          <p>Reviews appear after customers complete appointments and submit feedback.</p>
+          <h3>{t('reviews.noReviews')}</h3>
+          <p>{t('reviews.noReviewsDesc')}</p>
         </div>
       ) : (
         <div className="reviews-layout">
-          {/* Summary sidebar */}
           <div className="card reviews-summary">
             <div className="rev-avg">{avg}</div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -95,7 +90,6 @@ export default function ReviewsPage() {
             </div>
           </div>
 
-          {/* Review feed */}
           <div className="reviews-feed">
             {reviews.map(r => (
               <div key={r._id} className="rev-card card">
@@ -106,30 +100,18 @@ export default function ReviewsPage() {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
                     <div style={{ fontSize: 12, color: 'var(--ink-muted)' }}>
-                      {new Date(r.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      {new Date(r.createdAt).toLocaleDateString()}
                     </div>
-                    {r.service && (
-                      <div style={{ fontSize: 12, color: 'var(--gold)' }}>{r.service.name}</div>
-                    )}
-                    <button
-                      className="btn btn-ghost btn-sm"
-                      style={{ color: 'var(--error)', padding: '4px 8px' }}
-                      onClick={() => handleDelete(r._id)}
-                      disabled={deletingId === r._id}
-                      title="Delete this review"
-                    >
+                    {r.service && <div style={{ fontSize: 12, color: 'var(--gold)' }}>{r.service.name}</div>}
+                    <button className="btn btn-ghost btn-sm" style={{ color: 'var(--error)', padding: '4px 8px' }}
+                      onClick={() => handleDelete(r._id)} disabled={deletingId === r._id} title="Delete this review">
                       {deletingId === r._id
                         ? <span className="spinner" style={{ width: 14, height: 14, borderWidth: 2 }} />
-                        : <Trash2 size={14} />
-                      }
+                        : <Trash2 size={14} />}
                     </button>
                   </div>
                 </div>
-                {r.comment && (
-                  <p style={{ marginTop: 12, fontSize: 14, color: 'var(--ink-light)', lineHeight: 1.6 }}>
-                    {r.comment}
-                  </p>
-                )}
+                {r.comment && <p style={{ marginTop: 12, fontSize: 14, color: 'var(--ink-light)', lineHeight: 1.6 }}>{r.comment}</p>}
               </div>
             ))}
           </div>

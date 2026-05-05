@@ -1,11 +1,93 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 import {
   Calendar, Zap, Shield, TrendingUp, ChevronRight,
   Check, ArrowRight, Smartphone, Layers, Plus, Minus,
   Play, ShieldCheck, CreditCard, Star, X, MessageCircle,
   Clock, Users, DollarSign, Bell, Globe, Award, ChevronDown, Menu
 } from 'lucide-react';
+
+/* ─── Language Picker (landing page) ─── */
+const LANDING_LANGS = [
+  { code: 'en', label: 'English' }, { code: 'hi', label: 'हिंदी' },
+  { code: 'bn', label: 'বাংলা' }, { code: 'te', label: 'తెలుగు' },
+  { code: 'mr', label: 'मराठी' }, { code: 'ta', label: 'தமிழ்' },
+  { code: 'gu', label: 'ગુજરાતી' }, { code: 'kn', label: 'ಕನ್ನಡ' },
+  { code: 'ml', label: 'മലയാളം' }, { code: 'or', label: 'ଓଡ଼ିଆ' },
+  { code: 'pa', label: 'ਪੰਜਾਬੀ' }, { code: 'ur', label: 'اردو' },
+  { code: 'as', label: 'অসমীয়া' }, { code: 'ne', label: 'नेपाली' },
+];
+
+/* Normalise 'en-US' → 'en', 'hi-IN' → 'hi', etc. */
+const normLng = (lng) => (lng || 'en').split('-')[0];
+
+function LandingLangPicker({ dark = false }) {
+  const { i18n } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const activeLng = normLng(i18n.language);
+  const current = LANDING_LANGS.find(l => l.code === activeLng) || LANDING_LANGS[0];
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleChange = (l) => {
+    i18n.changeLanguage(l.code);
+    toast.success(`🌐 Language set to ${l.label}`, { duration: 2500, id: 'lang-change' });
+    setOpen(false);
+  };
+
+  const btnStyle = {
+    display: 'flex', alignItems: 'center', gap: 5,
+    padding: '7px 11px', borderRadius: 8, cursor: 'pointer',
+    fontSize: 13, fontWeight: 600, border: 'none',
+    background: dark ? 'rgba(255,255,255,0.10)' : 'rgba(15,23,42,0.06)',
+    color: dark ? '#fff' : '#334155',
+    transition: 'background 0.2s',
+  };
+
+  return (
+    <div ref={ref} style={{ position: 'relative', flexShrink: 0 }}>
+      <button onClick={() => setOpen(p => !p)} style={btnStyle}>
+        <Globe size={14} />
+        <span>{current.label}</span>
+        <ChevronDown size={12} />
+      </button>
+      {open && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 6px)', right: 0,
+          background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12,
+          boxShadow: '0 8px 28px rgba(0,0,0,0.13)', minWidth: 160, zIndex: 500,
+          maxHeight: 280, overflowY: 'auto',
+        }}>
+          {LANDING_LANGS.map(l => (
+            <button
+              key={l.code}
+              onClick={() => handleChange(l)}
+              style={{
+                display: 'block', width: '100%', textAlign: 'left',
+                padding: '9px 16px',
+                background: activeLng === l.code ? '#fef3c7' : 'none',
+                border: 'none', borderBottom: '1px solid #f1f5f9',
+                cursor: 'pointer', fontSize: 13,
+                fontWeight: activeLng === l.code ? 700 : 400,
+                color: '#0f172a',
+              }}
+            >
+              {activeLng === l.code && <span style={{ marginRight: 6, fontSize: 11 }}>✓</span>}
+              {l.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ─── Google Fonts ─── */
 const FontLoader = () => (
@@ -202,137 +284,73 @@ const testimonials = [
   },
 ];
 
-const features = [
-  {
-    icon: <Zap size={22} />,
-    title: 'Launch in 60 Seconds',
-    desc: 'Get a custom booking page with your brand, services, and pricing. No code. No designer. No delays.',
-    outcome: 'Your clients book — you sleep.',
-  },
-  {
-    icon: <Calendar size={22} />,
-    title: 'Zero Double Bookings',
-    desc: 'Smart calendar sync with Google, Outlook & iCal. BookEase blocks your time automatically.',
-    outcome: 'Never apologise for overlaps again.',
-  },
-  {
-    icon: <DollarSign size={22} />,
-    title: 'Get Paid Upfront',
-    desc: 'Collect payments before every session via Stripe or PayPal. 0% commission, always.',
-    outcome: 'Cash in hand before you show up.',
-  },
-  {
-    icon: <Bell size={22} />,
-    title: 'Auto Reminders',
-    desc: 'Automated SMS & email reminders cut no-shows by up to 80%. Set it once, forget it.',
-    outcome: 'Your schedule stays full.',
-  },
-  {
-    icon: <TrendingUp size={22} />,
-    title: 'See What\'s Working',
-    desc: 'Revenue trends, peak hours, repeat clients. Know exactly where your growth comes from.',
-    outcome: 'Data-driven decisions made easy.',
-  },
-  {
-    icon: <Smartphone size={22} />,
-    title: 'Run It from Your Phone',
-    desc: 'Manage bookings, reschedule, and chat with clients from any browser. No app download.',
-    outcome: 'Your business, from your pocket.',
-  },
+const FEATURE_ICONS = [
+  <Zap size={22} />,
+  <Calendar size={22} />,
+  <DollarSign size={22} />,
+  <Bell size={22} />,
+  <TrendingUp size={22} />,
+  <Smartphone size={22} />,
 ];
 
-const steps = [
-  {
-    num: '01',
-    icon: <Globe size={28} />,
-    title: 'Build Your Store',
-    desc: 'Add your services, set prices, and personalise your page. Takes under 2 minutes.',
-  },
-  {
-    num: '02',
-    icon: <ArrowRight size={28} />,
-    title: 'Share Your Link',
-    desc: 'Post it on Instagram, WhatsApp, or your website. Clients book directly — no back-and-forth.',
-  },
-  {
-    num: '03',
-    icon: <CreditCard size={28} />,
-    title: 'Get Booked & Paid',
-    desc: 'Receive instant payment, automatic confirmation, and SMS reminders. All on autopilot.',
-  },
+const STEP_ICONS = [
+  <Globe size={28} />,
+  <ArrowRight size={28} />,
+  <CreditCard size={28} />,
 ];
 
-const plans = [
-  {
-    name: 'Starter',
-    price: '0',
-    tag: '7 Day Free Trial',
-    features: [
-      '50 Bookings / month',
-      'Stripe & PayPal integration',
-      'Basic Analytics',
-      'Email Confirmations',
-      'Custom booking page URL',
-    ],
-    days: '/ 7 days',
-    popular: false,
-    cta: 'Start for Free',
-  },
-  {
-    name: 'Professional',
-    price: '899',
-    tag: 'Most Popular',
-    features: [
-      'Unlimited Bookings',
-      'SMS + Email Reminders',
-      'Custom Branding & Logo',
-      'Advanced Analytics',
-      'Priority Support',
-      '0% Transaction Fees',
-    ],
-    days: '/ 1 month',
-    popular: true,
-    cta: 'Get Professional',
-  },
-  {
-    name: 'Business',
-    price: '4999',
-    tag: 'Scale Up',
-    features: [
-      'Multi-staff Accounts',
-      'White-label Domain',
-      'API Access',
-      'Dedicated Account Manager',
-      'Custom Integrations',
-      'SLA Uptime Guarantee',
-    ],
-    days: '/ 1 year',
-    popular: false,
-    cta: 'Go Business',
-  },
-];
-
-const faqs = [
-  { q: 'Do I need any technical skills to get started?', a: 'None at all. BookEase is built for busy professionals, not developers. If you can fill out a form, you can launch your store.' },
-  { q: 'What payment methods are supported?', a: 'We support Stripe and PayPal out of the box, covering credit cards, debit cards, UPI (via Stripe India), and wallets. More gateways coming soon.' },
-  { q: 'Will my clients need to download an app?', a: 'No. Your storefront is a fully responsive web app that works perfectly in any browser — mobile or desktop. Zero friction for your clients.' },
-  { q: 'What happens if I want to cancel?', a: 'Cancel anytime — no lock-in, no cancellation fees. Your data is yours; we provide a full export before you leave.' },
-  { q: 'Is my payment data secure?', a: 'Yes. All transactions are processed by Stripe or PayPal. We are PCI-DSS compliant and never store raw card data on our servers.' },
-];
-
-const useCases = [
-  { emoji: '💆', label: 'Beauty & Wellness' },
-  { emoji: '🏋️', label: 'Fitness Trainers' },
-  { emoji: '📸', label: 'Photographers' },
-  { emoji: '🧑‍💼', label: 'Consultants' },
-  { emoji: '🎓', label: 'Tutors & Coaches' },
-  { emoji: '✂️', label: 'Salons & Spas' },
-  { emoji: '🧘', label: 'Yoga Instructors' },
-  { emoji: '🩺', label: 'Healthcare Pros' },
-];
+const USE_CASE_EMOJIS = ['💆', '🏋️', '📸', '🧑‍💼', '🎓', '✂️', '🧘', '🩺'];
 
 /* ─── Main Component ─── */
 const LandingPage = () => {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: FEATURE_ICONS[0], title: t('landing.f1Title'), desc: t('landing.f1Desc'), outcome: t('landing.f1Out') },
+    { icon: FEATURE_ICONS[1], title: t('landing.f2Title'), desc: t('landing.f2Desc'), outcome: t('landing.f2Out') },
+    { icon: FEATURE_ICONS[2], title: t('landing.f3Title'), desc: t('landing.f3Desc'), outcome: t('landing.f3Out') },
+    { icon: FEATURE_ICONS[3], title: t('landing.f4Title'), desc: t('landing.f4Desc'), outcome: t('landing.f4Out') },
+    { icon: FEATURE_ICONS[4], title: t('landing.f5Title'), desc: t('landing.f5Desc'), outcome: t('landing.f5Out') },
+    { icon: FEATURE_ICONS[5], title: t('landing.f6Title'), desc: t('landing.f6Desc'), outcome: t('landing.f6Out') },
+  ];
+
+  const steps = [
+    { num: '01', icon: STEP_ICONS[0], title: t('landing.s1Title'), desc: t('landing.s1Desc') },
+    { num: '02', icon: STEP_ICONS[1], title: t('landing.s2Title'), desc: t('landing.s2Desc') },
+    { num: '03', icon: STEP_ICONS[2], title: t('landing.s3Title'), desc: t('landing.s3Desc') },
+  ];
+
+  const plans = [
+    {
+      name: t('landing.starterName'), price: '0', tag: t('landing.starterTag'),
+      features: [t('landing.starterF1'), t('landing.starterF2'), t('landing.starterF3'), t('landing.starterF4'), t('landing.starterF5')],
+      days: '/ 7 days', popular: false, cta: t('landing.starterCta'),
+    },
+    {
+      name: t('landing.proName'), price: '899', tag: t('landing.proTag'),
+      features: [t('landing.proF1'), t('landing.proF2'), t('landing.proF3'), t('landing.proF4'), t('landing.proF5'), t('landing.proF6')],
+      days: '/ 1 month', popular: true, cta: t('landing.proCta'),
+    },
+    {
+      name: t('landing.bizName'), price: '4999', tag: t('landing.bizTag'),
+      features: [t('landing.bizF1'), t('landing.bizF2'), t('landing.bizF3'), t('landing.bizF4'), t('landing.bizF5'), t('landing.bizF6')],
+      days: '/ 1 year', popular: false, cta: t('landing.bizCta'),
+    },
+  ];
+
+  const faqs = [
+    { q: t('landing.faq1q'), a: t('landing.faq1a') },
+    { q: t('landing.faq2q'), a: t('landing.faq2a') },
+    { q: t('landing.faq3q'), a: t('landing.faq3a') },
+    { q: t('landing.faq4q'), a: t('landing.faq4a') },
+    { q: t('landing.faq5q'), a: t('landing.faq5a') },
+  ];
+
+  const useCases = USE_CASE_EMOJIS.map((emoji, i) => ({
+    emoji,
+    label: t(`landing.uc${i + 1}`),
+  }));
+
   const [activeFaq, setActiveFaq] = useState(null);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [showExitPopup, setShowExitPopup] = useState(false);
@@ -383,7 +401,7 @@ const LandingPage = () => {
         }}
       >
         <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: isMobile ? 12 : 14, fontFamily: 'Bricolage Grotesque, sans-serif', textAlign: 'center' }}>
-          🔥 Limited offer: FREE trial Available for 7 Days
+          {t('landing.stickyOffer')}
         </span>
         <Link to="/register" style={{
           background: '#f59e0b', color: '#0f172a',
@@ -393,7 +411,7 @@ const LandingPage = () => {
           transition: 'background 0.2s',
           whiteSpace: 'nowrap',
         }}>
-          Claim Offer →
+          {t('landing.stickyCta')}
         </Link>
       </div>
 
@@ -419,10 +437,10 @@ const LandingPage = () => {
             </button>
             <div style={{ fontSize: 48, marginBottom: 12 }}>🎁</div>
             <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: isMobile ? 22 : 26, fontWeight: 800, color: '#0f172a', marginBottom: 8 }}>
-              Wait! Don't miss this.
+              {t('landing.exitTitle')}
             </h3>
             <p style={{ color: '#64748b', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
-              Start your <strong>Professional plan free for 7 days</strong>. No credit card. Cancel anytime. Just results.
+              {t('landing.exitDesc')}
             </p>
             <Link to="/register" onClick={() => setShowExitPopup(false)} style={{
               display: 'block', background: '#f59e0b', color: '#0f172a',
@@ -430,13 +448,13 @@ const LandingPage = () => {
               fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 16,
               textDecoration: 'none', marginBottom: 12,
             }}>
-              Start My Free Trial →
+              {t('landing.exitCta')}
             </Link>
             <button
               onClick={() => { setShowExitPopup(false); setExitPopupDismissed(true); }}
               style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: 13, cursor: 'pointer' }}
             >
-              No thanks, I prefer manual bookings
+              {t('landing.exitNo')}
             </button>
           </div>
         </div>
@@ -465,16 +483,17 @@ const LandingPage = () => {
             {/* Desktop nav links */}
             {!isMobile && (
               <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-                <a href="#features" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Features</a>
-                <a href="#how-it-works" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>How it works</a>
-                <a href="#pricing" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>Pricing</a>
-                <a href="#faq" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>FAQ</a>
+                <a href="#features" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>{t('landing.navFeatures')}</a>
+                <a href="#how-it-works" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>{t('landing.navHowItWorks')}</a>
+                <a href="#pricing" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>{t('landing.navPricing')}</a>
+                <a href="#faq" style={{ fontSize: 14, fontWeight: 500, color: '#64748b', textDecoration: 'none' }}>{t('landing.navFaq')}</a>
               </div>
             )}
 
             <div style={{ display: 'flex', gap: isMobile ? 8 : 12, alignItems: 'center' }}>
+              {!isMobile && <LandingLangPicker />}
               {!isMobile && (
-                <Link to="/login" style={{ fontSize: 14, fontWeight: 600, color: '#334155', textDecoration: 'none' }}>Sign in</Link>
+                <Link to="/login" style={{ fontSize: 14, fontWeight: 600, color: '#334155', textDecoration: 'none' }}>{t('landing.navSignIn')}</Link>
               )}
               <Link to="/register" style={{
                 background: '#0f172a', color: '#fff',
@@ -484,7 +503,7 @@ const LandingPage = () => {
                 boxShadow: '0 4px 14px rgba(15,23,42,0.18)',
                 whiteSpace: 'nowrap',
               }}>
-                {isMobile ? 'Get Started' : 'Get Started Free'}
+                {isMobile ? t('landing.navGetStartedMobile') : t('landing.navGetStarted')}
               </Link>
               {/* Mobile hamburger */}
               {isMobile && (
@@ -499,12 +518,15 @@ const LandingPage = () => {
 
             {/* Mobile dropdown menu */}
             {isMobile && (
-              <div className={`mobile-menu${mobileMenuOpen ? ' open' : ''}`} onClick={() => setMobileMenuOpen(false)}>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How it works</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#faq">FAQ</a>
-                <Link to="/login" style={{ padding: '12px 24px', fontSize: 15, fontWeight: 500, color: '#334155', textDecoration: 'none', borderBottom: '1px solid #f1f5f9' }}>Sign in</Link>
+              <div className={`mobile-menu${mobileMenuOpen ? ' open' : ''}`}>
+                <a href="#features" onClick={() => setMobileMenuOpen(false)}>{t('landing.navFeatures')}</a>
+                <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)}>{t('landing.navHowItWorks')}</a>
+                <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>{t('landing.navPricing')}</a>
+                <a href="#faq" onClick={() => setMobileMenuOpen(false)}>{t('landing.navFaq')}</a>
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)} style={{ padding: '12px 24px', fontSize: 15, fontWeight: 500, color: '#334155', textDecoration: 'none', borderBottom: '1px solid #f1f5f9' }}>{t('landing.navSignIn')}</Link>
+                <div style={{ padding: '12px 24px', borderBottom: '1px solid #f1f5f9' }}>
+                  <LandingLangPicker />
+                </div>
               </div>
             )}
           </div>
@@ -542,7 +564,7 @@ const LandingPage = () => {
                 fontSize: isMobile ? 12 : 13, fontWeight: 600, color: '#92400e', marginBottom: 24,
               }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: 'pulse-ring 2s ease-out infinite' }} />
-                 Next Gen System — reduce no-shows by 80%
+                {t('landing.heroBadge')}
               </div>
 
               <h1 style={{
@@ -552,18 +574,18 @@ const LandingPage = () => {
                 color: '#0f172a', marginBottom: 24,
                 letterSpacing: '-1.5px',
               }}>
-                Get Fully Booked<br />
+                {t('landing.heroH1')}<br />
                 <span style={{
                   background: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                 }}>
-                  Without the Chaos.
+                  {t('landing.heroH1b')}
                 </span>
               </h1>
 
               <p style={{ fontSize: isMobile ? 16 : 18, lineHeight: 1.7, color: '#475569', maxWidth: 480, marginBottom: 36 }}>
-                The booking platform built for coaches, salons, and service professionals. Automate scheduling, payments, and reminders — so you focus on clients, not coordination.
+                {t('landing.heroDesc')}
               </p>
 
               <div style={{ display: 'flex', gap: isMobile ? 12 : 16, alignItems: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
@@ -575,7 +597,7 @@ const LandingPage = () => {
                   boxShadow: '0 8px 28px rgba(245,158,11,0.4)',
                   transition: 'all 0.2s',
                 }}>
-                  Start Free — No Credit Card
+                  {t('landing.heroCta1')}
                 </Link>
                 <Link to="/demo" style={{
                   display: 'flex', alignItems: 'center', gap: 10,
@@ -590,7 +612,7 @@ const LandingPage = () => {
                   }}>
                     <Play size={16} fill="#0f172a" />
                   </span>
-                  Watch 2-min Demo
+                  {t('landing.heroCta2')}
                 </Link>
               </div>
 
@@ -614,7 +636,7 @@ const LandingPage = () => {
                     {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="#f59e0b" color="#f59e0b" />)}
                   </div>
                   <p style={{ fontSize: 13, color: '#64748b' }}>
-                    <strong style={{ color: '#0f172a' }}>4.9/5</strong> from 2,000+ professionals
+                    <strong style={{ color: '#0f172a' }}>4.9/5</strong> {t('landing.heroSocial')}
                   </p>
                 </div>
               </div>
@@ -732,13 +754,13 @@ const LandingPage = () => {
         <section style={{ padding: isMobile ? '56px 16px' : '96px 24px', background: '#fff' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>Sound familiar?</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>{t('landing.probLabel')}</span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
-                Still Managing Bookings Manually?
+                {t('landing.probTitle')}
               </h2>
             </div>
 
@@ -751,14 +773,14 @@ const LandingPage = () => {
               {/* Pain points */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {isMobile && (
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>❌ Without BookEase</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>{t('landing.probCol')}</p>
                 )}
                 {[
-                  { emoji: '😩', text: 'Chasing clients on WhatsApp for confirmations' },
-                  { emoji: '💸', text: 'No-shows costing you revenue every week' },
-                  { emoji: '📅', text: 'Double bookings and scheduling conflicts' },
-                  { emoji: '⏰', text: 'Hours wasted on manual payment follow-ups' },
-                  { emoji: '😰', text: 'No visibility into your revenue or growth' },
+                  { emoji: '😩', text: t('landing.pain1') },
+                  { emoji: '💸', text: t('landing.pain2') },
+                  { emoji: '📅', text: t('landing.pain3') },
+                  { emoji: '⏰', text: t('landing.pain4') },
+                  { emoji: '😰', text: t('landing.pain5') },
                 ].map((p, i) => (
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
@@ -798,14 +820,14 @@ const LandingPage = () => {
               {/* Solutions */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {isMobile && (
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#16a34a', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>✅ With BookEase</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#16a34a', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>{t('landing.solCol')}</p>
                 )}
                 {[
-                  { emoji: '✅', text: 'Clients self-book from your page — no messages needed' },
-                  { emoji: '📲', text: 'Automated SMS reminders eliminate no-shows' },
-                  { emoji: '📆', text: 'Smart calendar sync prevents double bookings' },
-                  { emoji: '💳', text: 'Payments collected upfront, automatically' },
-                  { emoji: '📊', text: 'Real-time dashboard shows revenue and trends' },
+                  { emoji: '✅', text: t('landing.sol1') },
+                  { emoji: '📲', text: t('landing.sol2') },
+                  { emoji: '📆', text: t('landing.sol3') },
+                  { emoji: '💳', text: t('landing.sol4') },
+                  { emoji: '📊', text: t('landing.sol5') },
                 ].map((s, i) => (
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
@@ -825,7 +847,7 @@ const LandingPage = () => {
         <section style={{ padding: sectionPadSm, background: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16 }}>
-              Perfect for
+              {t('landing.ucLabel')}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? 10 : 12, justifyContent: 'center' }}>
               {useCases.map((u, i) => (
@@ -850,17 +872,17 @@ const LandingPage = () => {
         <section id="how-it-works" style={{ padding: sectionPad, background: '#fff' }}>
           <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
-              Simple by design
+              {t('landing.howLabel')}
             </span>
             <h2 style={{
               fontFamily: 'Bricolage Grotesque, sans-serif',
               fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
               marginTop: 8, marginBottom: 16, letterSpacing: '-1px',
             }}>
-              From Sign-up to First Booking in Minutes
+              {t('landing.howTitle')}
             </h2>
             <p style={{ color: '#64748b', fontSize: isMobile ? 15 : 16, maxWidth: 520, margin: '0 auto', marginBottom: isMobile ? 40 : 64 }}>
-              No tutorials, no setup calls. BookEase is so intuitive, most users go live within 4 minutes.
+              {t('landing.howDesc')}
             </p>
 
             <div style={{
@@ -908,7 +930,7 @@ const LandingPage = () => {
                     fontSize: 13, fontWeight: 800, color: '#f59e0b',
                     textTransform: 'uppercase', letterSpacing: 2, display: 'block', marginBottom: 8,
                   }}>
-                    Step {step.num}
+                    {t('landing.howStep')} {step.num}
                   </span>
                   <h3 style={{
                     fontFamily: 'Bricolage Grotesque, sans-serif',
@@ -933,7 +955,7 @@ const LandingPage = () => {
                 textDecoration: 'none', boxShadow: '0 8px 24px rgba(15,23,42,0.2)',
               }}>
                 <Play size={18} fill="#fff" />
-                Watch the Full Demo
+                {t('landing.howDemoCta')}
               </Link>
             </div>
           </div>
@@ -944,14 +966,14 @@ const LandingPage = () => {
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
-                Built for performance
+                {t('landing.featLabel')}
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
-                Everything You Need. Nothing You Don't.
+                {t('landing.featTitle')}
               </h2>
             </div>
 
@@ -1000,17 +1022,17 @@ const LandingPage = () => {
           <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative' }}>
             <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
-                Real stories
+                {t('landing.testLabel')}
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#fff',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
-                Professionals Love BookEase
+                {t('landing.testTitle')}
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 12, fontSize: isMobile ? 15 : 16 }}>
-                Over 2,000 service businesses trust us to run their bookings.
+                {t('landing.testDesc')}
               </p>
             </div>
 
@@ -1075,17 +1097,17 @@ const LandingPage = () => {
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 64 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
-                Pricing
+                {t('landing.pricLabel')}
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
-                Simple, Honest Pricing
+                {t('landing.pricTitle')}
               </h2>
               <p style={{ color: '#64748b', marginTop: 12, fontSize: isMobile ? 15 : 16 }}>
-                No hidden fees. No transaction cuts. Just one transparent price.
+                {t('landing.pricDesc')}
               </p>
             </div>
 
@@ -1170,7 +1192,7 @@ const LandingPage = () => {
             </div>
 
             <p style={{ textAlign: 'center', marginTop: 32, fontSize: 14, color: '#94a3b8' }}>
-              🔒 No hidden fees · Cancel anytime · 0% transaction commission
+              {t('landing.pricNote')}
             </p>
           </div>
         </section>
@@ -1180,14 +1202,14 @@ const LandingPage = () => {
           <div style={{ maxWidth: 760, margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: isMobile ? 40 : 56 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: 2 }}>
-                Got questions?
+                {t('landing.faqLabel')}
               </span>
               <h2 style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 fontSize: 'clamp(26px, 4vw, 44px)', fontWeight: 800, color: '#0f172a',
                 marginTop: 8, letterSpacing: '-1px',
               }}>
-                Frequently Asked Questions
+                {t('landing.faqTitle')}
               </h2>
             </div>
 
@@ -1250,11 +1272,11 @@ const LandingPage = () => {
               fontSize: 'clamp(28px, 5vw, 58px)', fontWeight: 800, color: '#fff',
               letterSpacing: '-1.5px', marginBottom: 20, lineHeight: 1.1,
             }}>
-              Ready to Automate Your<br />
-              <span style={{ color: '#f59e0b' }}>Bookings & Grow Faster?</span>
+              {t('landing.ctaTitle')}<br />
+              <span style={{ color: '#f59e0b' }}>{t('landing.ctaTitle2')}</span>
             </h2>
             <p style={{ fontSize: isMobile ? 16 : 18, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: 40, maxWidth: 500, margin: '0 auto 40px' }}>
-              Join 2,000+ professionals already using BookEase to save time, reduce no-shows, and grow their revenue.
+              {t('landing.ctaDesc')}
             </p>
             <div style={{ display: 'flex', gap: isMobile ? 12 : 16, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link to="/register" style={{
@@ -1263,7 +1285,7 @@ const LandingPage = () => {
                 fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 800, fontSize: isMobile ? 15 : 17,
                 textDecoration: 'none', boxShadow: '0 10px 32px rgba(245,158,11,0.45)',
               }}>
-                Start Free — No Credit Card
+                {t('landing.ctaCta1')}
               </Link>
               <Link to="/demo" style={{
                 border: '1px solid rgba(255,255,255,0.2)', color: '#fff',
@@ -1271,11 +1293,11 @@ const LandingPage = () => {
                 fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: isMobile ? 15 : 16,
                 textDecoration: 'none', background: 'rgba(255,255,255,0.07)',
               }}>
-                Book a Demo
+                {t('landing.ctaCta2')}
               </Link>
             </div>
             <p style={{ marginTop: 24, fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>
-              Setup takes 4 minutes · No credit card required · Cancel anytime
+              {t('landing.ctaNote')}
             </p>
           </div>
         </section>
@@ -1294,7 +1316,7 @@ const LandingPage = () => {
                   Book<span style={{ color: '#f59e0b' }}>Ease</span>
                 </div>
                 <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 15, lineHeight: 1.7, maxWidth: 300, marginBottom: 24 }}>
-                  The all-in-one platform for service professionals to automate scheduling, secure payments, and scale operations.
+                  {t('landing.footerDesc')}
                 </p>
                 <div style={{ display: 'flex', gap: 10 }}>
                   {[
@@ -1322,9 +1344,9 @@ const LandingPage = () => {
                 gridColumn: isMobile ? '1' : 'auto',
               }}>
                 {[
-                  { title: 'Product', links: ['Features', 'Pricing', 'Demo', 'Changelog'] },
-                  { title: 'Resources', links: ['Blog', 'Help Center', 'API Docs', 'Community'] },
-                  { title: 'Company', links: ['About Us', 'Careers', 'Privacy Policy', 'Terms'] },
+                  { title: t('landing.footerProduct'), links: [t('landing.footerFeatures'), t('landing.footerPricing'), t('landing.footerDemo'), t('landing.footerChangelog')] },
+                  { title: t('landing.footerResources'), links: [t('landing.footerBlog'), t('landing.footerHelp'), t('landing.footerApi'), t('landing.footerCommunity')] },
+                  { title: t('landing.footerCompany'), links: [t('landing.footerAbout'), t('landing.footerCareers'), t('landing.footerPrivacyPolicy'), t('landing.footerTerms')] },
                 ].map((col, i) => (
                   isMobile ? (
                     <div key={i}>
@@ -1343,9 +1365,9 @@ const LandingPage = () => {
 
               {/* Desktop only: individual columns */}
               {!isMobile && [
-                { title: 'Product', links: ['Features', 'Pricing', 'Demo', 'Changelog'] },
-                { title: 'Resources', links: ['Blog', 'Help Center', 'API Docs', 'Community'] },
-                { title: 'Company', links: ['About Us', 'Careers', 'Privacy Policy', 'Terms'] },
+                { title: t('landing.footerProduct'), links: [t('landing.footerFeatures'), t('landing.footerPricing'), t('landing.footerDemo'), t('landing.footerChangelog')] },
+                { title: t('landing.footerResources'), links: [t('landing.footerBlog'), t('landing.footerHelp'), t('landing.footerApi'), t('landing.footerCommunity')] },
+                { title: t('landing.footerCompany'), links: [t('landing.footerAbout'), t('landing.footerCareers'), t('landing.footerPrivacyPolicy'), t('landing.footerTerms')] },
               ].map((col, i) => (
                 <div key={i}>
                   <h4 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 15, marginBottom: 20 }}>{col.title}</h4>
@@ -1374,7 +1396,7 @@ const LandingPage = () => {
                 © {new Date().getFullYear()} BookEase Inc. by Avenirya Solutions X Yash Kolnure
               </p>
               <div style={{ display: 'flex', gap: 24 }}>
-                {['Privacy', 'Terms', 'Cookies'].map((item, i) => (
+                {[t('landing.footerPrivacy'), t('landing.footerTerms'), t('landing.footerCookies')].map((item, i) => (
                   <a key={i} href="#" style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, textDecoration: 'none' }}>{item}</a>
                 ))}
               </div>

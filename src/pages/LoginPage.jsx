@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import './AuthPages.css';
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
 
@@ -15,10 +17,10 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.email, form.password);
-      toast.success('Welcome back!');
+      toast.success(t('auth.welcomeBackToast'));
       navigate('/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || t('auth.loginFailed'));
     } finally {
       setLoading(false);
     }
@@ -27,19 +29,19 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-brand">
-        <Link to="/" className="auth-logo">BookEase</Link>
-        <div className="auth-brand-tagline">Manage your service business with elegance</div>
+        <Link to="/" className="auth-logo">BookKromess</Link>
+        <div className="auth-brand-tagline">{t('auth.tagline')}</div>
         <div className="auth-brand-decor" aria-hidden />
       </div>
       <div className="auth-form-side">
         <div className="auth-form-wrap animate-fadeUp">
           <div className="auth-header">
-            <h1>Welcome back</h1>
-            <p>Sign in to your provider dashboard</p>
+            <h1>{t('auth.welcomeBack')}</h1>
+            <p>{t('auth.signInSubtitle')}</p>
           </div>
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
-              <label className="form-label">Email address</label>
+              <label className="form-label">{t('auth.emailAddress')}</label>
               <input
                 type="email" className="form-input" placeholder="you@example.com"
                 value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
@@ -47,7 +49,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Password</label>
+              <label className="form-label">{t('auth.password')}</label>
               <input
                 type="password" className="form-input" placeholder="••••••••"
                 value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
@@ -55,11 +57,11 @@ export default function LoginPage() {
               />
             </div>
             <button type="submit" className="btn btn-primary btn-full btn-lg" disabled={loading}>
-              {loading ? <span className="spinner" /> : 'Sign In'}
+              {loading ? <span className="spinner" /> : t('auth.signIn')}
             </button>
           </form>
           <p className="auth-switch">
-            Don't have an account? <Link to="/register">Create your store →</Link>
+            {t('auth.noAccount')} <Link to="/register">{t('auth.createStore')}</Link>
           </p>
         </div>
       </div>

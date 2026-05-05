@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { storeAPI, appointmentAPI } from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { TrendingUp, Calendar, DollarSign, Clock, ChevronRight, ExternalLink } from 'lucide-react';
 import './DashboardHome.css';
 
@@ -18,8 +19,16 @@ function StatCard({ label, value, sub, icon, color }) {
   );
 }
 
+function getGreeting(t) {
+  const h = new Date().getHours();
+  if (h < 12) return t('dashboard.goodMorning');
+  if (h < 17) return t('dashboard.goodAfternoon');
+  return t('dashboard.goodEvening');
+}
+
 export default function DashboardHome() {
   const { store, user } = useAuth();
+  const { t } = useTranslation();
   const [analytics, setAnalytics] = useState(null);
   const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,42 +59,42 @@ export default function DashboardHome() {
     <div className="dash-home">
       <div className="dash-welcome">
         <div>
-          <h1>Good {getGreeting()}, {user?.name?.split(' ')[0]} 👋</h1>
-          <p>Here's what's happening with {store?.name || 'your store'} today.</p>
+          <h1>{getGreeting(t)}, {user?.name?.split(' ')[0]} 👋</h1>
+          <p>{t('dashboard.subtitle', { storeName: store?.name || 'your store' })}</p>
         </div>
         {store?.slug && (
           <a href={`/store/${store.slug}`} target="_blank" rel="noopener" className="btn btn-outline btn-sm">
-            Your store link <ExternalLink size={13}/>
+            {t('dashboard.storeLink')} <ExternalLink size={13}/>
           </a>
         )}
       </div>
 
       <div className="stats-grid">
         <StatCard
-          label="Total Appointments"
+          label={t('dashboard.totalAppointments')}
           value={analytics?.totalAppointments ?? '—'}
-          sub={`${analytics?.thisMonthAppointments} this month`}
+          sub={t('dashboard.thisMonthSub', { count: analytics?.thisMonthAppointments })}
           icon={<Calendar size={20}/>}
           color="var(--gold)"
         />
         <StatCard
-          label="This Month"
+          label={t('dashboard.thisMonth')}
           value={analytics?.thisMonthAppointments ?? '—'}
-          sub={growth !== 0 ? `${growth > 0 ? '+' : ''}${growth}% vs last month` : 'vs last month'}
+          sub={growth !== 0 ? `${growth > 0 ? '+' : ''}${growth}% ${t('dashboard.vsLastMonth')}` : t('dashboard.vsLastMonth')}
           icon={<TrendingUp size={20}/>}
           color="var(--sage)"
         />
         <StatCard
-          label="Revenue Collected"
+          label={t('dashboard.revenueCollected')}
           value={analytics?.totalRevenue ? `₹${analytics.totalRevenue.toLocaleString()}` : '₹0'}
-          sub="From paid appointments"
+          sub={t('dashboard.fromPaid')}
           icon={<DollarSign size={20}/>}
           color="var(--terracotta)"
         />
         <StatCard
-          label="Pending"
+          label={t('dashboard.pending')}
           value={analytics?.statusBreakdown?.pending ?? 0}
-          sub="Awaiting confirmation"
+          sub={t('dashboard.awaitingConfirmation')}
           icon={<Clock size={20}/>}
           color="var(--ink-muted)"
         />
@@ -93,13 +102,13 @@ export default function DashboardHome() {
 
       {analytics?.statusBreakdown && (
         <div className="status-breakdown card">
-          <h3 className="breakdown-title">Appointment Status Breakdown</h3>
+          <h3 className="breakdown-title">{t('dashboard.statusBreakdown')}</h3>
           <div className="breakdown-bars">
             {[
-              { key:'pending', label:'Pending', color:'#c07000' },
-              { key:'confirmed', label:'Confirmed', color:'var(--success)' },
-              { key:'completed', label:'Completed', color:'#1565c0' },
-              { key:'cancelled', label:'Cancelled', color:'var(--error)' },
+              { key:'pending',   label: t('appointments.pending'),   color:'#c07000' },
+              { key:'confirmed', label: t('appointments.confirmed'), color:'var(--success)' },
+              { key:'completed', label: t('appointments.completed'), color:'#1565c0' },
+              { key:'cancelled', label: t('appointments.cancelled'), color:'var(--error)' },
             ].map(({ key, label, color }) => {
               const count = analytics.statusBreakdown[key] || 0;
               const total = analytics.totalAppointments || 1;
@@ -118,32 +127,31 @@ export default function DashboardHome() {
         </div>
       )}
 
-      {/* Recent appointments */}
       <div className="recent-section">
         <div className="recent-header">
-          <h3>Recent Appointments</h3>
+          <h3>{t('dashboard.recentAppointments')}</h3>
           <Link to="/dashboard/appointments" className="btn btn-ghost btn-sm">
-            View all <ChevronRight size={14}/>
+            {t('dashboard.viewAll')} <ChevronRight size={14}/>
           </Link>
         </div>
         {recent.length === 0 ? (
           <div className="empty-state" style={{padding:'40px 24px',border:'1px solid var(--border)',borderRadius:'var(--radius-lg)',background:'var(--warm-white)'}}>
             <div className="empty-state-icon">📅</div>
-            <h3>No appointments yet</h3>
-            <p>Share your store link to start receiving bookings.</p>
+            <h3>{t('dashboard.noAppointmentsYet')}</h3>
+            <p>{t('dashboard.shareLink')}</p>
           </div>
         ) : (
           <div className="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Customer</th>
-                  <th>Service</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Amount</th>
-                  <th>Status</th>
+                  <th>{t('dashboard.id')}</th>
+                  <th>{t('dashboard.customer')}</th>
+                  <th>{t('dashboard.service')}</th>
+                  <th>{t('common.date')}</th>
+                  <th>{t('common.time')}</th>
+                  <th>{t('common.amount')}</th>
+                  <th>{t('common.status')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,7 +160,7 @@ export default function DashboardHome() {
                     <td><code style={{fontSize:12}}>#{a.appointmentId}</code></td>
                     <td><div style={{fontWeight:600}}>{a.customer.name}</div><div style={{fontSize:12,color:'var(--ink-muted)'}}>{a.customer.email}</div></td>
                     <td>{a.service?.name}</td>
-                    <td style={{fontSize:13}}>{new Date(a.appointmentDate).toLocaleDateString('en-IN')}</td>
+                    <td style={{fontSize:13}}>{new Date(a.appointmentDate).toLocaleDateString()}</td>
                     <td style={{fontSize:13}}>{a.startTime}</td>
                     <td>₹{a.totalAmount}</td>
                     <td><span className={`badge badge-${a.status}`}>{a.status}</span></td>
@@ -165,11 +173,4 @@ export default function DashboardHome() {
       </div>
     </div>
   );
-}
-
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 12) return 'morning';
-  if (h < 17) return 'afternoon';
-  return 'evening';
 }

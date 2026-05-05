@@ -1,0 +1,83 @@
+{
+  "common": {
+    "save": "ਬਦਲਾਅ ਸੁਰੱਖਿਅਤ ਕਰੋ", "cancel": "ਰੱਦ ਕਰੋ", "delete": "ਮਿਟਾਓ",
+    "edit": "ਸੰਪਾਦਿਤ ਕਰੋ", "add": "ਜੋੜੋ", "back": "ਵਾਪਸ",
+    "close": "ਬੰਦ ਕਰੋ", "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...", "goHome": "ਹੋਮ ਤੇ ਜਾਓ",
+    "confirm": "ਪੁਸ਼ਟੀ ਕਰੋ", "name": "ਨਾਮ", "email": "ਈਮੇਲ", "phone": "ਫ਼ੋਨ",
+    "notes": "ਨੋਟ", "total": "ਕੁੱਲ", "discount": "ਛੋਟ", "price": "ਕੀਮਤ",
+    "duration": "ਸਮਾਂ", "active": "ਸਰਗਰਮ", "inactive": "ਅਕਿਰਿਆਸ਼ੀਲ",
+    "today": "ਅੱਜ", "closed": "ਬੰਦ", "minutes": "ਮਿੰਟ", "min": "ਮਿ",
+    "booked": "ਬੁੱਕ", "clearFilters": "ਫਿਲਟਰ ਸਾਫ਼ ਕਰੋ", "sortBy": "ਕ੍ਰਮਬੱਧ ਕਰੋ"
+  },
+  "nav": {
+    "overview": "ਸੰਖੇਪ", "appointments": "ਅਪੌਇੰਟਮੈਂਟ", "myCalendar": "ਮੇਰਾ ਕੈਲੰਡਰ",
+    "services": "ਸੇਵਾਵਾਂ", "coupons": "ਕੂਪਨ", "reviews": "ਸਮੀਖਿਆਵਾਂ",
+    "storeSettings": "ਸਟੋਰ ਸੈਟਿੰਗਸ", "plans": "ਯੋਜਨਾਵਾਂ", "viewStore": "ਸਟੋਰ ਦੇਖੋ"
+  },
+  "store": {
+    "loading": "ਸਟੋਰ ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…", "notFound": "ਸਟੋਰ ਨਹੀਂ ਮਿਲਿਆ",
+    "notFoundDesc": "ਇਹ ਸਟੋਰ ਮੌਜੂਦ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਾਂ ਅਕਿਰਿਆਸ਼ੀਲ ਕੀਤਾ ਗਿਆ ਹੋ ਸਕਦਾ ਹੈ।",
+    "servicesTab": "ਸੇਵਾਵਾਂ", "reviewsTab": "ਸਮੀਖਿਆਵਾਂ", "hoursTab": "ਸਮਾਂ",
+    "searchPlaceholder": "ਸੇਵਾਵਾਂ ਖੋਜੋ…", "noServicesFound": "ਕੋਈ ਸੇਵਾ ਨਹੀਂ ਮਿਲੀ",
+    "noServicesDesc": "ਇਸ ਸਟੋਰ ਨੇ ਅਜੇ ਕੋਈ ਸੇਵਾ ਨਹੀਂ ਜੋੜੀ।",
+    "trySearch": "ਵੱਖ ਸ਼ਬਦਾਂ ਨਾਲ ਖੋਜੋ।", "noReviews": "ਅਜੇ ਕੋਈ ਸਮੀਖਿਆ ਨਹੀਂ",
+    "noReviewsDesc": "ਅਪੌਇੰਟਮੈਂਟ ਪੂਰੀ ਹੋਣ ਤੋਂ ਬਾਅਦ ਸਮੀਖਿਆਵਾਂ ਆਉਣਗੀਆਂ।",
+    "businessHours": "ਕਾਰੋਬਾਰ ਸਮਾਂ", "hoursNotSet": "ਕਾਰੋਬਾਰ ਸਮਾਂ ਅਜੇ ਸੈੱਟ ਨਹੀਂ ਹੋਇਆ।",
+    "book": "ਬੁੱਕ ਕਰੋ", "bookNow": "ਹੁਣੇ ਬੁੱਕ ਕਰੋ",
+    "services": "ਸੇਵਾਵਾਂ", "reviews": "ਸਮੀਖਿਆਵਾਂ",
+    "clearFilters": "ਫਿਲਟਰ ਸਾਫ਼ ਕਰੋ", "view": "ਦੇਖੋ", "sale": "ਸੇਲ", "today": "ਅੱਜ"
+  },
+  "booking": {
+    "bookAppointment": "ਅਪੌਇੰਟਮੈਂਟ ਬੁੱਕ ਕਰੋ", "loadingService": "ਸੇਵਾ ਲੋਡ ਹੋ ਰਹੀ ਹੈ...",
+    "serviceNotFound": "ਸੇਵਾ ਨਹੀਂ ਮਿਲੀ।",
+    "step1": "ਮਿਤੀ ਅਤੇ ਸਮਾਂ", "step2": "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ", "step3": "ਸਮੀਖਿਆ ਅਤੇ ਭੁਗਤਾਨ",
+    "chooseDatetime": "ਮਿਤੀ ਅਤੇ ਸਮਾਂ ਚੁਣੋ",
+    "availableSlots": "{{date}} ਲਈ ਉਪਲਬਧ ਸਲਾਟ",
+    "loadingSlots": "ਸਲਾਟ ਲੋਡ ਹੋ ਰਹੇ ਹਨ...", "noSlots": "ਇਸ ਮਿਤੀ ਲਈ ਕੋਈ ਸਲਾਟ ਨਹੀਂ।",
+    "serviceOptions": "ਸੇਵਾ ਵਿਕਲਪ", "yourDetails": "ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ",
+    "noAccountRequired": "ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ — ਬੱਸ ਆਪਣੀ ਜਾਣਕਾਰੀ ਭਰੋ।",
+    "fullName": "ਪੂਰਾ ਨਾਮ", "phoneNumber": "ਫ਼ੋਨ ਨੰਬਰ",
+    "emailAddress": "ਈਮੇਲ ਪਤਾ", "notesOptional": "ਨੋਟ (ਵਿਕਲਪਿਕ)",
+    "notesPlaceholder": "ਕੋਈ ਖਾਸ ਬੇਨਤੀ...",
+    "haveCoupon": "ਕੂਪਨ ਹੈ?", "enterCoupon": "ਕੂਪਨ ਕੋਡ ਦਰਜ ਕਰੋ",
+    "apply": "ਲਾਗੂ ਕਰੋ", "couponApplied": "ਕੂਪਨ ਲਾਗੂ ਹੋਇਆ! ₹{{amount}} ਬਚਤ",
+    "invalidCoupon": "ਅਵੈਧ ਕੂਪਨ", "reviewConfirm": "ਸਮੀਖਿਆ ਅਤੇ ਪੁਸ਼ਟੀ",
+    "time": "ਸਮਾਂ", "name": "ਨਾਮ", "servicePrice": "ਸੇਵਾ ਦੀ ਕੀਮਤ",
+    "confirmBooking": "ਬੁਕਿੰਗ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ →",
+    "bookingConfirmed": "ਬੁਕਿੰਗ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ!",
+    "confirmationDesc": "ਤੁਹਾਡੀ ਅਪੌਇੰਟਮੈਂਟ ਸਫਲਤਾਪੂਰਵਕ ਬੁੱਕ ਹੋਈ। ਪੁਸ਼ਟੀਕਰਨ ਈਮੇਲ ਭੇਜਿਆ ਗਿਆ",
+    "appointmentId": "ਅਪੌਇੰਟਮੈਂਟ ID", "service": "ਸੇਵਾ",
+    "totalPaid": "ਕੁੱਲ ਭੁਗਤਾਨ", "manageAppointment": "ਅਪੌਇੰਟਮੈਂਟ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
+    "backToStore": "ਸਟੋਰ ਤੇ ਵਾਪਸ ਜਾਓ", "selected": "ਚੁਣਿਆ ਗਿਆ",
+    "selectLabel": "{{option}} ਚੁਣੋ", "continue": "ਜਾਰੀ ਰੱਖੋ",
+    "reviewBooking": "ਬੁਕਿੰਗ ਸਮੀਖਿਆ", "fillRequired": "ਸਾਰੀ ਲੋੜੀਂਦੀ ਜਾਣਕਾਰੀ ਭਰੋ",
+    "bookingFailed": "ਬੁਕਿੰਗ ਅਸਫਲ ਰਹੀ", "duration": "ਸਮਾਂ",
+    "durationMinutes": "{{count}} ਮਿੰਟ", "selectDuration": "ਸੈਸ਼ਨ ਦਾ ਸਮਾਂ ਚੁਣੋ",
+    "pricePreview": "ਕੀਮਤ: ₹{{amount}}", "youSave": "ਤੁਸੀਂ ₹{{amount}} ਬਚਾਉਂਦੇ ਹੋ"
+  },
+  "manage": {
+    "loading": "ਅਪੌਇੰਟਮੈਂਟ ਲੋਡ ਹੋ ਰਹੀ ਹੈ...",
+    "invalidLink": "ਅਵੈਧ ਜਾਂ ਮਿਆਦ ਪੁੱਗੀ ਲਿੰਕ",
+    "invalidDesc": "ਇਹ ਅਪੌਇੰਟਮੈਂਟ ਲਿੰਕ ਅਵੈਧ ਹੈ ਜਾਂ ਮਿਆਦ ਪੁੱਗ ਗਈ ਹੈ।",
+    "appointment": "ਅਪੌਇੰਟਮੈਂਟ", "appointmentDetails": "ਅਪੌਇੰਟਮੈਂਟ ਵੇਰਵੇ",
+    "dateTime": "ਮਿਤੀ ਅਤੇ ਸਮਾਂ", "duration": "ਸਮਾਂ", "store": "ਸਟੋਰ", "service": "ਸੇਵਾ",
+    "paymentSummary": "ਭੁਗਤਾਨ ਸੰਖੇਪ", "servicePrice": "ਸੇਵਾ ਦੀ ਕੀਮਤ",
+    "total": "ਕੁੱਲ", "paymentStatus": "ਭੁਗਤਾਨ ਸਥਿਤੀ",
+    "cancellationReason": "ਰੱਦ ਕਰਨ ਦਾ ਕਾਰਨ", "cancelAppointment": "ਅਪੌਇੰਟਮੈਂਟ ਰੱਦ ਕਰੋ",
+    "cancelConfirm": "ਕੀ ਤੁਸੀਂ ਇਹ ਅਪੌਇੰਟਮੈਂਟ ਰੱਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+    "cancelSuccess": "ਅਪੌਇੰਟਮੈਂਟ ਰੱਦ ਹੋ ਗਈ",
+    "leaveReview": "ਸਮੀਖਿਆ ਦਿਓ", "reviewDone": "✓ ਸਮੀਖਿਆ ਜਮ੍ਹਾ ਹੋਈ। ਧੰਨਵਾਦ!",
+    "viewStore": "ਸਟੋਰ ਦੇਖੋ", "customerInfo": "ਗਾਹਕ ਜਾਣਕਾਰੀ",
+    "storeContact": "ਸਟੋਰ ਸੰਪਰਕ", "rating": "ਰੇਟਿੰਗ",
+    "commentOptional": "ਟਿੱਪਣੀ (ਵਿਕਲਪਿਕ)", "commentPlaceholder": "ਆਪਣਾ ਅਨੁਭਵ ਸਾਂਝਾ ਕਰੋ...",
+    "submitReview": "ਸਮੀਖਿਆ ਜਮ੍ਹਾ ਕਰੋ", "reviewSubmitted": "ਸਮੀਖਿਆ ਜਮ੍ਹਾ ਹੋਈ! ਧੰਨਵਾਦ।",
+    "selectRating": "ਰੇਟਿੰਗ ਚੁਣੋ", "minutes": "ਮਿੰਟ"
+  },
+  "language": {
+    "label": "ਭਾਸ਼ਾ",
+    "en": "English", "hi": "हिंदी", "bn": "বাংলা", "te": "తెలుగు",
+    "mr": "मराठी", "ta": "தமிழ்", "gu": "ગુજરાતી", "kn": "ಕನ್ನಡ",
+    "ml": "മലയാളം", "or": "ଓଡ଼ିଆ", "pa": "ਪੰਜਾਬੀ", "ur": "اردو",
+    "as": "অসমীয়া", "ne": "नेपाली"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "common": {
+    "save": "परिवर्तन सुरक्षित गर्नुहोस्", "cancel": "रद्द गर्नुहोस्", "delete": "मेट्नुहोस्",
+    "edit": "सम्पादन गर्नुहोस्", "add": "थप्नुहोस्", "back": "पछाडि",
+    "close": "बन्द गर्नुहोस्", "loading": "लोड हुँदैछ...", "goHome": "होममा जानुहोस्",
+    "confirm": "पुष्टि गर्नुहोस्", "name": "नाम", "email": "इमेल", "phone": "फोन",
+    "notes": "नोट", "total": "जम्मा", "discount": "छुट", "price": "मूल्य",
+    "duration": "अवधि", "active": "सक्रिय", "inactive": "निष्क्रिय",
+    "today": "आज", "closed": "बन्द", "minutes": "मिनेट", "min": "मि",
+    "booked": "बुक", "clearFilters": "फिल्टर हटाउनुहोस्", "sortBy": "क्रमबद्ध गर्नुहोस्"
+  },
+  "nav": {
+    "overview": "सारांश", "appointments": "अपोइन्टमेन्ट", "myCalendar": "मेरो क्यालेन्डर",
+    "services": "सेवाहरू", "coupons": "कुपन", "reviews": "समीक्षाहरू",
+    "storeSettings": "स्टोर सेटिङ", "plans": "योजनाहरू", "viewStore": "स्टोर हेर्नुहोस्"
+  },
+  "store": {
+    "loading": "स्टोर लोड हुँदैछ…", "notFound": "स्टोर फेला परेन",
+    "notFoundDesc": "यो स्टोर अवस्थित नहुन सक्छ वा निष्क्रिय गरिएको हुन सक्छ।",
+    "servicesTab": "सेवाहरू", "reviewsTab": "समीक्षाहरू", "hoursTab": "समय",
+    "searchPlaceholder": "सेवाहरू खोज्नुहोस्…", "noServicesFound": "कुनै सेवा फेला परेन",
+    "noServicesDesc": "यस स्टोरले अहिलेसम्म कुनै सेवा थपेको छैन।",
+    "trySearch": "फरक शब्दहरू प्रयोग गरी खोज्नुहोस्।", "noReviews": "अहिलेसम्म कुनै समीक्षा छैन",
+    "noReviewsDesc": "अपोइन्टमेन्ट पूरा भएपछि समीक्षाहरू आउनेछन्।",
+    "businessHours": "व्यापार समय", "hoursNotSet": "व्यापार समय अहिलेसम्म सेट गरिएको छैन।",
+    "book": "बुक गर्नुहोस्", "bookNow": "अहिले नै बुक गर्नुहोस्",
+    "services": "सेवाहरू", "reviews": "समीक्षाहरू",
+    "clearFilters": "फिल्टर हटाउनुहोस्", "view": "हेर्नुहोस्", "sale": "सेल", "today": "आज"
+  },
+  "booking": {
+    "bookAppointment": "अपोइन्टमेन्ट बुक गर्नुहोस्", "loadingService": "सेवा लोड हुँदैछ...",
+    "serviceNotFound": "सेवा फेला परेन।",
+    "step1": "मिति र समय", "step2": "तपाईंको विवरण", "step3": "समीक्षा र भुक्तानी",
+    "chooseDatetime": "मिति र समय छान्नुहोस्",
+    "availableSlots": "{{date}} का लागि उपलब्ध स्लट",
+    "loadingSlots": "स्लट लोड हुँदैछ...", "noSlots": "यस मितिका लागि कुनै स्लट छैन।",
+    "serviceOptions": "सेवा विकल्पहरू", "yourDetails": "तपाईंको विवरण",
+    "noAccountRequired": "खाता आवश्यक छैन — आफ्नो विवरण भर्नुहोस्।",
+    "fullName": "पूरा नाम", "phoneNumber": "फोन नम्बर",
+    "emailAddress": "इमेल ठेगाना", "notesOptional": "नोट (वैकल्पिक)",
+    "notesPlaceholder": "कुनै विशेष अनुरोध...",
+    "haveCoupon": "कुपन छ?", "enterCoupon": "कुपन कोड प्रविष्ट गर्नुहोस्",
+    "apply": "लागू गर्नुहोस्", "couponApplied": "कुपन लागू भयो! ₹{{amount}} बचत",
+    "invalidCoupon": "अमान्य कुपन", "reviewConfirm": "समीक्षा र पुष्टि",
+    "time": "समय", "name": "नाम", "servicePrice": "सेवाको मूल्य",
+    "confirmBooking": "बुकिङ पुष्टि गर्नुहोस् →",
+    "bookingConfirmed": "बुकिङ पुष्टि भयो!",
+    "confirmationDesc": "तपाईंको अपोइन्टमेन्ट सफलतापूर्वक बुक भयो। पुष्टि इमेल पठाइयो",
+    "appointmentId": "अपोइन्टमेन्ट ID", "service": "सेवा",
+    "totalPaid": "जम्मा भुक्तानी", "manageAppointment": "अपोइन्टमेन्ट व्यवस्थापन गर्नुहोस्",
+    "backToStore": "स्टोरमा फर्कनुहोस्", "selected": "छानिएको",
+    "selectLabel": "{{option}} छान्नुहोस्", "continue": "जारी राख्नुहोस्",
+    "reviewBooking": "बुकिङ समीक्षा गर्नुहोस्", "fillRequired": "सबै आवश्यक विवरण भर्नुहोस्",
+    "bookingFailed": "बुकिङ असफल", "duration": "अवधि",
+    "durationMinutes": "{{count}} मिनेट", "selectDuration": "सत्रको अवधि छान्नुहोस्",
+    "pricePreview": "मूल्य: ₹{{amount}}", "youSave": "तपाईं ₹{{amount}} बचत गर्नुहुन्छ"
+  },
+  "manage": {
+    "loading": "अपोइन्टमेन्ट लोड हुँदैछ...",
+    "invalidLink": "अमान्य वा म्याद सकिएको लिङ्क",
+    "invalidDesc": "यो अपोइन्टमेन्ट लिङ्क अमान्य वा म्याद सकिएको छ।",
+    "appointment": "अपोइन्टमेन्ट", "appointmentDetails": "अपोइन्टमेन्ट विवरण",
+    "dateTime": "मिति र समय", "duration": "अवधि", "store": "स्टोर", "service": "सेवा",
+    "paymentSummary": "भुक्तानी सारांश", "servicePrice": "सेवाको मूल्य",
+    "total": "जम्मा", "paymentStatus": "भुक्तानी स्थिति",
+    "cancellationReason": "रद्द गर्नुको कारण", "cancelAppointment": "अपोइन्टमेन्ट रद्द गर्नुहोस्",
+    "cancelConfirm": "के तपाईं यो अपोइन्टमेन्ट रद्द गर्न चाहनुहुन्छ?",
+    "cancelSuccess": "अपोइन्टमेन्ट रद्द भयो",
+    "leaveReview": "समीक्षा दिनुहोस्", "reviewDone": "✓ समीक्षा पेश भयो। धन्यवाद!",
+    "viewStore": "स्टोर हेर्नुहोस्", "customerInfo": "ग्राहकको जानकारी",
+    "storeContact": "स्टोर सम्पर्क", "rating": "रेटिङ",
+    "commentOptional": "टिप्पणी (वैकल्पिक)", "commentPlaceholder": "आफ्नो अनुभव साझा गर्नुहोस्...",
+    "submitReview": "समीक्षा पेश गर्नुहोस्", "reviewSubmitted": "समीक्षा पेश भयो! धन्यवाद।",
+    "selectRating": "रेटिङ छान्नुहोस्", "minutes": "मिनेट"
+  },
+  "language": {
+    "label": "भाषा",
+    "en": "English", "hi": "हिंदी", "bn": "বাংলা", "te": "తెలుగు",
+    "mr": "मराठी", "ta": "தமிழ்", "gu": "ગુજรાતી", "kn": "ಕನ್ನಡ",
+    "ml": "മലയാളം", "or": "ଓଡ଼ିଆ", "pa": "ਪੰਜਾਬੀ", "ur": "اردو",
+    "as": "অসমীয়া", "ne": "नेपाली"
+  }
+}

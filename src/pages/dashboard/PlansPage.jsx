@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { storeAPI } from '../../api/api';
 import { Check, Clock, Shield, RefreshCw, X, Phone, Mail, MessageCircle } from 'lucide-react';
 import './PlansPage.css';
@@ -10,13 +11,7 @@ const PLANS = [
     name: '7 Day Free Trial',
     price: '₹0',
     period: '/ 7 days',
-    features: [
-      '50 Bookings / month',
-      'Basic Analytics',
-      'Email Confirmations',
-      'Custom booking page URL',
-      'Standard Support',
-    ],
+    features: ['50 Bookings / month','Basic Analytics','Email Confirmations','Custom booking page URL','Standard Support'],
     popular: false,
   },
   {
@@ -24,14 +19,7 @@ const PLANS = [
     name: 'Quarterly',
     price: '₹1,999',
     period: '/ 3 months',
-    features: [
-      'Unlimited Bookings',
-      'SMS + Email Reminders',
-      'Custom Branding & Logo',
-      'Advanced Analytics',
-      'Priority Support',
-      '0% Transaction Fees',
-    ],
+    features: ['Unlimited Bookings','SMS + Email Reminders','Custom Branding & Logo','Advanced Analytics','Priority Support','0% Transaction Fees'],
     popular: false,
   },
   {
@@ -39,14 +27,7 @@ const PLANS = [
     name: 'Half Yearly',
     price: '₹3,499',
     period: '/ 6 months',
-    features: [
-      'Everything in Quarterly',
-      'Multi-staff Accounts',
-      'Custom Domain Support',
-      'API Access',
-      'Advanced Coupons & Offers',
-      'Dedicated Support',
-    ],
+    features: ['Everything in Quarterly','Multi-staff Accounts','Custom Domain Support','API Access','Advanced Coupons & Offers','Dedicated Support'],
     popular: true,
   },
   {
@@ -54,20 +35,14 @@ const PLANS = [
     name: 'Yearly',
     price: '₹5,999',
     period: '/ 1 year',
-    features: [
-      'Everything in Half Yearly',
-      'White-label Domain',
-      'Dedicated Account Manager',
-      'Custom Integrations',
-      'SLA Uptime Guarantee',
-      'Early Feature Access',
-    ],
+    features: ['Everything in Half Yearly','White-label Domain','Dedicated Account Manager','Custom Integrations','SLA Uptime Guarantee','Early Feature Access'],
     popular: false,
   },
 ];
 
 export default function PlansPage() {
   const { store, setStore } = useAuth();
+  const { t } = useTranslation();
   const [subscription, setSubscription] = useState(null);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [showContactModal, setShowContactModal] = useState(false);
@@ -87,9 +62,7 @@ export default function PlansPage() {
       }
     } catch {
       setSubscription(store?.subscription || null);
-    } finally {
-      setFetchLoading(false);
-    }
+    } finally { setFetchLoading(false); }
   };
 
   useEffect(() => { fetchSubscription(); }, []);
@@ -101,13 +74,11 @@ export default function PlansPage() {
   };
 
   const expiryDate = subscription?.expiryDate
-    ? new Date(subscription.expiryDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    ? new Date(subscription.expiryDate).toLocaleDateString()
     : '—';
-
   const daysLeft = subscription?.expiryDate
-    ? Math.ceil((new Date(subscription.expiryDate) - new Date()) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((new Date(subscription.expiryDate) - new Date()) / (1000*60*60*24))
     : null;
-
   const isExpired = daysLeft !== null && daysLeft <= 0;
   const isActive = subscription?.status === 'active' && !isExpired;
 
@@ -115,70 +86,65 @@ export default function PlansPage() {
     <div className="plans-container">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Subscription Plan</h1>
-          <p className="page-subtitle">Choose the best plan for your business growth</p>
+          <h1 className="page-title">{t('plans.title')}</h1>
+          <p className="page-subtitle">{t('plans.subtitle')}</p>
         </div>
         <button className="plans-refresh-btn" onClick={fetchSubscription} disabled={fetchLoading}>
           <RefreshCw size={15} className={fetchLoading ? 'spin' : ''} />
-          Refresh
+          {t('common.refresh')}
         </button>
       </div>
 
-      {/* Current Plan Status */}
       <div className="card current-plan-card">
         {fetchLoading ? (
-          <div className="plans-skeleton">Loading subscription info...</div>
+          <div className="plans-skeleton">{t('plans.loading')}</div>
         ) : (
           <>
             <div className="plan-status-info">
-              <div className="status-icon"><Clock size={24} /></div>
+              <div className="status-icon"><Clock size={24}/></div>
               <div>
-                <div className="status-label">Current Plan</div>
-                <div className="status-value">{subscription?.planName || 'No Active Plan'}</div>
+                <div className="status-label">{t('plans.currentPlan')}</div>
+                <div className="status-value">{subscription?.planName || t('plans.noActivePlan')}</div>
               </div>
-              <div className="status-divider" />
+              <div className="status-divider"/>
               <div>
-                <div className="status-label">Expires On</div>
+                <div className="status-label">{t('plans.expiresOn')}</div>
                 <div className={`status-value ${isExpired ? 'expiring-soon' : ''}`}>{expiryDate}</div>
               </div>
               {daysLeft !== null && (
                 <>
-                  <div className="status-divider" />
+                  <div className="status-divider"/>
                   <div>
-                    <div className="status-label">Days Remaining</div>
+                    <div className="status-label">{t('plans.daysRemaining')}</div>
                     <div className={`status-value ${daysLeft <= 7 ? 'expiring-soon' : ''}`}>
-                      {isExpired ? 'Expired' : `${daysLeft} days`}
+                      {isExpired ? t('plans.expired') : `${daysLeft} ${t('plans.days')}`}
                     </div>
                   </div>
                 </>
               )}
               {subscription?.startDate && (
                 <>
-                  <div className="status-divider" />
+                  <div className="status-divider"/>
                   <div>
-                    <div className="status-label">Started On</div>
-                    <div className="status-value">
-                      {new Date(subscription.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </div>
+                    <div className="status-label">{t('plans.startedOn')}</div>
+                    <div className="status-value">{new Date(subscription.startDate).toLocaleDateString()}</div>
                   </div>
                 </>
               )}
             </div>
             <div className={`badge ${isExpired ? 'badge-canceled' : isActive ? 'badge-confirmed' : 'badge-pending'}`}>
-              {isExpired ? 'Expired' : isActive ? 'Active' : subscription?.status || 'Inactive'}
+              {isExpired ? t('plans.expired') : isActive ? t('common.active') : subscription?.status || t('common.inactive')}
             </div>
           </>
         )}
       </div>
 
-      {/* Pricing Grid */}
       <div className="pricing-grid pricing-grid-4">
         {PLANS.map((plan) => {
           const isCurrentPlan = !fetchLoading && subscription?.planId === plan.id;
           return (
             <div key={plan.id} className={`plan-card ${plan.popular ? 'popular' : ''} ${isCurrentPlan ? 'current' : ''}`}>
-              {plan.tag && <div className="popular-tag">{plan.tag}</div>}
-              {isCurrentPlan && <div className="current-plan-ribbon">✓ Your Plan</div>}
+              {isCurrentPlan && <div className="current-plan-ribbon">{t('plans.yourPlan')}</div>}
               <div className="plan-header">
                 <h3 className="plan-name">{plan.name}</h3>
                 <div className="plan-price">
@@ -188,10 +154,7 @@ export default function PlansPage() {
               </div>
               <ul className="plan-features">
                 {plan.features.map((feat, i) => (
-                  <li key={i}>
-                    <Check size={15} className="text-primary" />
-                    <span>{feat}</span>
-                  </li>
+                  <li key={i}><Check size={15} className="text-primary"/><span>{feat}</span></li>
                 ))}
               </ul>
               <button
@@ -199,7 +162,7 @@ export default function PlansPage() {
                 onClick={() => handlePlanClick(plan)}
                 disabled={isCurrentPlan || fetchLoading}
               >
-                {isCurrentPlan ? '✓ Current Plan' : 'Upgrade to this Plan'}
+                {isCurrentPlan ? t('plans.yourPlan') : t('plans.upgradePlan')}
               </button>
             </div>
           );
@@ -207,63 +170,42 @@ export default function PlansPage() {
       </div>
 
       <div className="plans-guarantee">
-        <Shield size={16} />
-        <span>To upgrade or change your plan, please contact our customer support team.</span>
+        <Shield size={16}/>
+        <span>{t('plans.contactSupport')}</span>
       </div>
 
-      {/* Contact Customer Care Modal */}
       {showContactModal && (
         <div className="plans-modal-overlay" onClick={() => setShowContactModal(false)}>
           <div className="plans-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="plans-modal-close" onClick={() => setShowContactModal(false)}>
-              <X size={18} />
-            </button>
-
+            <button className="plans-modal-close" onClick={() => setShowContactModal(false)}><X size={18}/></button>
             <div className="plans-modal-icon">🎯</div>
-            <h3 className="plans-modal-title">Interested in {selectedPlan?.name}?</h3>
-            <p className="plans-modal-subtitle">
-              To upgrade your plan, please reach out to our support team. We'll get you set up right away!
-            </p>
-
+            <h3 className="plans-modal-title">{t('plans.interestedIn', { planName: selectedPlan?.name })}</h3>
+            <p className="plans-modal-subtitle">{t('plans.upgradeDesc')}</p>
             <div className="plans-contact-options">
               <a href={`tel:${import.meta.env.VITE_SUPPORT_PHONE}`} className="plans-contact-card">
-                <div className="plans-contact-icon plans-contact-icon-phone">
-                  <Phone size={20} />
-                </div>
+                <div className="plans-contact-icon plans-contact-icon-phone"><Phone size={20}/></div>
                 <div>
-                  <div className="plans-contact-label">Call Us</div>
+                  <div className="plans-contact-label">{t('plans.callUs')}</div>
                   <div className="plans-contact-value">{import.meta.env.VITE_SUPPORT_PHONE}</div>
                 </div>
               </a>
-
               <a href={`mailto:${import.meta.env.VITE_SUPPORT_EMAIL}`} className="plans-contact-card">
-                <div className="plans-contact-icon plans-contact-icon-email">
-                  <Mail size={20} />
-                </div>
+                <div className="plans-contact-icon plans-contact-icon-email"><Mail size={20}/></div>
                 <div>
-                  <div className="plans-contact-label">Email Us</div>
+                  <div className="plans-contact-label">{t('plans.emailUs')}</div>
                   <div className="plans-contact-value">{import.meta.env.VITE_SUPPORT_EMAIL}</div>
                 </div>
               </a>
-
-              <a
-                href={`https://wa.me/${import.meta.env.VITE_SUPPORT_WHATSAPP}`}
-                target="_blank"
-                rel="noreferrer"
-                className="plans-contact-card"
-              >
-                <div className="plans-contact-icon plans-contact-icon-whatsapp">
-                  <MessageCircle size={20} />
-                </div>
+              <a href={`https://wa.me/${import.meta.env.VITE_SUPPORT_WHATSAPP}`} target="_blank" rel="noreferrer" className="plans-contact-card">
+                <div className="plans-contact-icon plans-contact-icon-whatsapp"><MessageCircle size={20}/></div>
                 <div>
-                  <div className="plans-contact-label">WhatsApp</div>
-                  <div className="plans-contact-value">Chat with us</div>
+                  <div className="plans-contact-label">{t('plans.whatsapp')}</div>
+                  <div className="plans-contact-value">{t('plans.chatWithUs')}</div>
                 </div>
               </a>
             </div>
-
             <p className="plans-modal-note">
-              Our team is available <strong>Mon–Sat, 10am–7pm IST</strong>
+              {t('plans.availability')} <strong>{t('plans.availabilityHours')}</strong>
             </p>
           </div>
         </div>

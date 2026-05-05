@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { superAdminAPI } from '../../api/api';
 import toast from 'react-hot-toast';
 import './SuperAdmin.css';
 
 export default function SuperAdminLogin() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,11 +19,11 @@ export default function SuperAdminLogin() {
       const res = await superAdminAPI.login({ email, password });
       if (res.data.success) {
         localStorage.setItem('superadmin_token', res.data.token);
-        toast.success('Welcome, Super Admin!');
+        toast.success(t('superadmin.welcomeAdmin'));
         navigate('/superadmin/dashboard');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid credentials');
+      toast.error(err.response?.data?.message || t('superadmin.invalidCredentials'));
     } finally {
       setLoading(false);
     }
@@ -32,12 +34,12 @@ export default function SuperAdminLogin() {
       <div className="sa-login-card">
         <div className="sa-login-header">
           <div className="sa-shield-icon">🛡️</div>
-          <h1>Super Admin</h1>
-          <p>Avenirya Platform Control</p>
+          <h1>{t('superadmin.title')}</h1>
+          <p>{t('superadmin.subtitle')}</p>
         </div>
         <form onSubmit={handleLogin} className="sa-login-form">
           <div className="sa-field">
-            <label>Admin Email</label>
+            <label>{t('superadmin.adminEmail')}</label>
             <input
               type="email"
               value={email}
@@ -48,7 +50,7 @@ export default function SuperAdminLogin() {
             />
           </div>
           <div className="sa-field">
-            <label>Password</label>
+            <label>{t('superadmin.password')}</label>
             <input
               type="password"
               value={password}
@@ -58,10 +60,10 @@ export default function SuperAdminLogin() {
             />
           </div>
           <button type="submit" className="sa-login-btn" disabled={loading}>
-            {loading ? 'Authenticating...' : 'Access Dashboard'}
+            {loading ? t('superadmin.authenticating') : t('superadmin.accessDashboard')}
           </button>
         </form>
-        <p className="sa-login-notice">🔒 Restricted access. This page is not publicly linked.</p>
+        <p className="sa-login-notice">🔒 {t('superadmin.restricted')}</p>
       </div>
     </div>
   );

@@ -82,6 +82,24 @@
 .sum-sel-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
 .sum-sel-val { font-size: 14px; font-weight: 500; color: var(--ink); }
 
+/* Inline booking summary (step 2 combined) */
+.booking-inline-summary {
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.inline-sum-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: 4px;
+}
+
 @media (max-width: 900px) {
   .booking-layout { grid-template-columns: 1fr; }
   .booking-sidebar { position: static; order: -1; }
